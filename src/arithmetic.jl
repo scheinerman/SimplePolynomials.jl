@@ -1,4 +1,4 @@
-import Base: (+), (-), (*), (^)
+import Base: (+), (-), (*), (/), (//), (^), divrem
 
 
 # Addition
@@ -72,7 +72,7 @@ function (^)(p::SimplePolynomial{T}, k::S) where{T, S<:Integer}
 
     if k==2
         return p*p
-    end 
+    end
 
     if k%2 == 0  # even exponent
         j = k÷2
@@ -83,4 +83,43 @@ function (^)(p::SimplePolynomial{T}, k::S) where{T, S<:Integer}
     j = k÷2
     q = p^j
     return q*q*p
+end
+
+
+# Division
+
+function (/)(p::SimplePolynomial, a::T) where T<:CoefX
+    coefs = p.data .// a
+    return SimplePolynomial(coefs)
+end
+(//)(p::SimplePolynomial, a::T) where T<:CoefX = p/a
+
+
+function divrem(a::SimplePolynomial{S}, b::SimplePolynomial{T}) where {S,T}
+    if b==0
+        DivideError()
+    end
+
+    ST = typeof((a[0]+b[0])//1)
+
+    da = degree(a)
+    db = degree(b)
+
+    if da < db
+        return SimplePolynomial(), a
+    end
+
+    lead = a.data[end] // b.data[end]
+
+    coefs = zeros(ST,da-db+1)
+    coefs[end] = lead
+
+    q = SimplePolynomial(coefs)
+
+    aa = a - b*q
+
+    qq,r = divrem(aa,b)
+
+    return q+qq,r
+
 end

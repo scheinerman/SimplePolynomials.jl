@@ -1,9 +1,9 @@
 module SimplePolynomials
 
-import Base: getindex, (==)
+import Base: getindex, (==), show
 import Polynomials: degree, Polynomial
 
-export SimplePolynomial
+export SimplePolynomial, degree
 
 # IntegerX is any sort of real or Gaussian integer
 IntegerX = Union{S,Complex{S}} where S<:Integer
@@ -105,6 +105,13 @@ function (p::SimplePolynomial)(x::T) where T<:Number
     return result
 end
 
+# This is a placeholder `show`. We can better!
+function show(io::IO, p::SimplePolynomial{T}) where T
+    print(io,"SimplePolynomial(",p.data,")")
+end
+
+
 include("arithmetic.jl")
+include("gcd.jl")
 
 end
