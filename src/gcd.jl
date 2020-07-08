@@ -16,4 +16,10 @@ function gcd(a::SimplePolynomial, b::SimplePolynomial)
 
     q,r = divrem(a,b)
     return gcd(b,r)
+end
+
+
+function lcm(a::SimplePolynomial,b::SimplePolynomial)
+    q,r = divrem(a*b,gcd(a,b))
+    return q
 end 

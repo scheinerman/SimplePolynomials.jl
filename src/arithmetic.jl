@@ -1,5 +1,7 @@
 import Base: (+), (-), (*), (/), (//), (^), divrem
 
+export monic
+
 
 # Addition
 
@@ -94,6 +96,19 @@ function (/)(p::SimplePolynomial, a::T) where T<:CoefX
 end
 (//)(p::SimplePolynomial, a::T) where T<:CoefX = p/a
 
+"""
+`monic(p::SimplePolynomial)` returns a new polynomial formed by
+dividing all coefficients by the leading coefficient, thereby
+yielding a monic polynomial. If `p` is zero, a zero polynomial
+is returned.
+"""
+function monic(p::SimplePolynomial)::SimplePolynomial
+    if p==0
+        return p/1
+    end
+    return p/p.data[end]
+end
+
 
 function divrem(a::SimplePolynomial{S}, b::SimplePolynomial{T}) where {S,T}
     if b==0
@@ -115,11 +130,8 @@ function divrem(a::SimplePolynomial{S}, b::SimplePolynomial{T}) where {S,T}
     coefs[end] = lead
 
     q = SimplePolynomial(coefs)
-
     aa = a - b*q
-
     qq,r = divrem(aa,b)
 
     return q+qq,r
-
 end
