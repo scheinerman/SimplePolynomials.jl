@@ -19,13 +19,34 @@ struct SimplePolynomial{T<:CoefX}
     SimplePolynomial(list::Vector{T}) where T = new{T}(_chomp(list))
 end
 
+SimplePolynomial(c...) = SimplePolynomial(collect(c))
 
+
+"""
+`_chomp(list)` creates a new list by removing all trailing zeros
+unless that would remove everything, in which case we leave a single zero.
+"""
 function _chomp(list::Vector{T})::Vector{T} where T<:Number
     if length(list) == 0 || all(list .== 0)
         return T[0]
     end
     k = findlast(list .!= 0)
     return list[1:k]
+end
+
+
+"""
+`_chomp!(list)` modifies list by removing all trailing zeros, unless
+the list is entirely zeros in which case we leave a single 0.
+"""
+function _chomp!(list::Vector{T}) where T<:Number
+    while length(list)>1
+        n = length(list)
+        if list[n] != 0
+            return
+        end
+        deleteat!(list,n)
+    end
 end
 
 function deg(p::SimplePolynomial)
@@ -36,12 +57,33 @@ function deg(p::SimplePolynomial)
     return -1
 end
 
-function getindex(p::SimplePolynomial, k::Int)
+"""
+For a `SimplePolynomial`, `p`, use `p[k]` to read the coefficient
+of `x^k`. In particular, `p[0]` is the constant term. If `k` is
+larger than the degree of the polynomial, `0` is returned.
+"""
+function getindex(p::SimplePolynomial{T}, k::Int) where T
     n = length(p.data)
-    if k<0 || k>=n
-        BoundsError(p,k)
+    if k<0
+        error("index [$k] must be nonnegative")
     end
+
+    if k>=n
+        return zero(T)
+    end
+
     return p.data[k+1]
+end
+
+# This implements evaluation
+function (p::SimplePolynomial)(x::T) where T<:Number
+    result = zero(T)
+    n = deg(p)
+    for j=n:-1:0
+        result *= x
+        result += p[j]
+    end
+    return result
 end
 
 end
