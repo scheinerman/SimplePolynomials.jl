@@ -1,2 +1,2 @@
-# SimplePolynomials.jl
+# SimplePolynomials
 Basic polynomials with exact coefficients
