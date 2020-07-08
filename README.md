@@ -1,5 +1,14 @@
 # SimplePolynomials
 
+
+[![Build Status](https://travis-ci.org/scheinerman/SimplePolynomials.jl.svg?branch=master)](https://travis-ci.org/scheinerman/SimplePolynomials.jl)
+
+[![Coverage Status](https://coveralls.io/repos/scheinerman/SimplePolynomials.jl/badge.svg?branch=master&service=github)](https://coveralls.io/github/scheinerman/SimplePolynomials.jl?branch=master)
+
+[![codecov.io](http://codecov.io/github/scheinerman/SimplePolynomials.jl/coverage.svg?branch=master)](http://codecov.io/github/scheinerman/SimplePolynomials.jl?branch=master)
+
+
+
 This module defines the `SimplePolynomial` type. These are polynomials
 with exact coefficients (integers, Gaussian integers, or Gaussian rationals).
 
@@ -61,6 +70,10 @@ polynomials.
 Similarly, `lcm(a,b)` returns a least common multiple of `a` and `b`.
 As with `gcd`, this is not uniquely defined.
 
+To be sure that the result of these operations are consistent, the
+results are wrapped in `monic` to ensure that the results
+have leading coefficient equal to one.
+
 ## Conversion to/from `Polynomial`
 
 The `Polynomials` module also defines polynomials with many additional
@@ -73,7 +86,7 @@ simple:
 `Polynomial` type.
 * If `p` is a `Polynomial`, the `SimplePolynomial(p)` returns its
 `SimplePolynomial` version. However, this will not work if the coefficients
-in `p` are floating point. 
+in `p` are floating point.
 
 
 
@@ -82,7 +95,6 @@ in `p` are floating point.
 ## To do
 
 * The `show` function gives an unaesthetic output.
-* Consider wrapping `gcd` and `lcm` in the `monic` function to give a
-more predictable output.
+
 * Consider creating an `integerize` function to clear denominators. This
 may be tricky for `Complex` coefficient polynomials.

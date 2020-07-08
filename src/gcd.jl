@@ -15,11 +15,11 @@ function gcd(a::SimplePolynomial, b::SimplePolynomial)
     end
 
     q,r = divrem(a,b)
-    return gcd(b,r)
+    return monic(gcd(b,r))
 end
 
 
 function lcm(a::SimplePolynomial,b::SimplePolynomial)
     q,r = divrem(a*b,gcd(a,b))
-    return q
-end 
+    return monic(q)
+end
