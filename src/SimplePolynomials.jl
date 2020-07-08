@@ -1,9 +1,9 @@
 module SimplePolynomials
 
 import Base: getindex, (==), show
-import Polynomials: degree, Polynomial
+import Polynomials: degree, Polynomial, coeffs
 
-export SimplePolynomial, degree
+export SimplePolynomial, degree, coeffs
 
 # IntegerX is any sort of real or Gaussian integer
 IntegerX = Union{S,Complex{S}} where S<:Integer
@@ -29,6 +29,8 @@ SimplePolynomial() = SimplePolynomial(0)
 (==)(p::SimplePolynomial,a::T) where T = p == SimplePolynomial(a)
 (==)(a::T,p::SimplePolynomial) where T = p == SimplePolynomial(a)
 
+
+coeffs(p::SimplePolynomial) = copy(p.data)
 
 
 # conversion to/from Polynomial type
@@ -97,7 +99,7 @@ end
 # This implements evaluation
 function (p::SimplePolynomial)(x::T) where T<:Number
     result = zero(T)
-    n = deg(p)
+    n = degree(p)
     for j=n:-1:0
         result *= x
         result += p[j]
@@ -106,9 +108,19 @@ function (p::SimplePolynomial)(x::T) where T<:Number
 end
 
 # This is a placeholder `show`. We can better!
-function show(io::IO, p::SimplePolynomial{T}) where T
-    print(io,"SimplePolynomial(",p.data,")")
+function show(io::IO, p::SimplePolynomial)
+    print(io,"SimplePolynomial([")
+    n = length(p.data)
+    for j=1:n-1
+        print(io,"$(p.data[j]),")
+    end
+    print("$(p.data[end])])")
 end
+
+#
+# function show(io::IO, p::SimplePolynomial{T}) where T
+#     print(io,"SimplePolynomial(",p.data,")")
+# end
 
 
 include("arithmetic.jl")
