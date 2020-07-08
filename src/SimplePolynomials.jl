@@ -21,7 +21,15 @@ struct SimplePolynomial{T<:CoefX}
 end
 
 SimplePolynomial(c...) = SimplePolynomial(collect(c))
+SimplePolynomial() = SimplePolynomial(0)
+
+# equality checking
+
 (==)(p::SimplePolynomial,q::SimplePolynomial) = p.data == q.data
+(==)(p::SimplePolynomial,a::T) where T = p == SimplePolynomial(a)
+(==)(a::T,p::SimplePolynomial) where T = p == SimplePolynomial(a)
+
+
 
 # conversion to/from Polynomial type
 SimplePolynomial(P::Polynomial) = SimplePolynomial(P.coeffs)
@@ -96,5 +104,7 @@ function (p::SimplePolynomial)(x::T) where T<:Number
     end
     return result
 end
+
+include("arithmetic.jl")
 
 end
