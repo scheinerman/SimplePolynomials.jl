@@ -1,8 +1,9 @@
 module SimplePolynomials
 
-import Base: getindex
+import Base: getindex, (==)
+import Polynomials: degree, Polynomial
 
-export SimplePolynomial, deg
+export SimplePolynomial
 
 # IntegerX is any sort of real or Gaussian integer
 IntegerX = Union{S,Complex{S}} where S<:Integer
@@ -20,6 +21,11 @@ struct SimplePolynomial{T<:CoefX}
 end
 
 SimplePolynomial(c...) = SimplePolynomial(collect(c))
+(==)(p::SimplePolynomial,q::SimplePolynomial) = p.data == q.data
+
+# conversion to/from Polynomial type
+SimplePolynomial(P::Polynomial) = SimplePolynomial(P.coeffs)
+Polynomial(p::SimplePolynomial) = Polynomial(p.data)
 
 
 """
@@ -49,7 +55,12 @@ function _chomp!(list::Vector{T}) where T<:Number
     end
 end
 
-function deg(p::SimplePolynomial)
+"""
+`degree(p::SimplePolynomial)` returns the degree of `p`; that is,
+the highest exponent with a nonzero coefficient. If `p`
+is the zero polynomial, then `-1` is returned.
+"""
+function degree(p::SimplePolynomial)
     n = length(p.data)
     if n>1 || p.data[1]!=0
         return n-1
