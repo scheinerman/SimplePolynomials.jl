@@ -1,6 +1,20 @@
 import Base: gcd, lcm
 
+
 function gcd(a::SimplePolynomial, b::SimplePolynomial)
+    try
+        d = _gcd(a,b)
+        return d
+    catch
+        aa = big(a)
+        bb = big(b)
+        dd = _gcd(aa,bb)
+        d = small(dd)
+        return d
+    end
+end
+
+function _gcd(a::SimplePolynomial, b::SimplePolynomial)
 
     if a==0 && b==0
         error("The two arguments cannot both be zero")
@@ -15,7 +29,7 @@ function gcd(a::SimplePolynomial, b::SimplePolynomial)
     end
 
     q,r = divrem(a,b)
-    return monic(gcd(b,r))
+    return monic(_gcd(b,monic(r)))
 end
 
 

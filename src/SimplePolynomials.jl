@@ -1,9 +1,9 @@
 module SimplePolynomials
 
-import Base: getindex, (==), show
-import Polynomials: degree, Polynomial, coeffs
+import Base: getindex, (==), show, zero, one, eltype, adjoint
+import Polynomials: degree, Polynomial, coeffs, roots, derivative, integrate
 
-export SimplePolynomial, degree, coeffs
+export SimplePolynomial, degree, coeffs, getx, Polynomial, roots, derivative, integrate
 
 # IntegerX is any sort of real or Gaussian integer
 IntegerX = Union{S,Complex{S}} where S<:Integer
@@ -15,13 +15,24 @@ RationalX = Union{Rational{S},Complex{Rational{S}}} where S<:Integer
 
 CoefX = Union{IntegerX,RationalX}
 
-struct SimplePolynomial{T<:CoefX}
-    data::Array{T,1}
-    SimplePolynomial(list::Vector{T}) where T = new{T}(_chomp(list))
+struct SimplePolynomial
+    data::Vector
+    SimplePolynomial(list::Vector{T}) where T<:CoefX = new(_chomp(list))
 end
 
-SimplePolynomial(c...) = SimplePolynomial(collect(c))
-SimplePolynomial() = SimplePolynomial(0)
+function SimplePolynomial(c...)
+    n = length(c)
+    T = typeof(sum(c))
+    data = zeros(T,n)
+    for j=1:n
+        data[j] = c[j]
+    end
+
+    SimplePolynomial(data)
+end
+
+
+SimplePolynomial() = SimplePolynomial([0])
 
 # equality checking
 
@@ -31,6 +42,7 @@ SimplePolynomial() = SimplePolynomial(0)
 
 
 coeffs(p::SimplePolynomial) = copy(p.data)
+eltype(p::SimplePolynomial) = eltype(p.data)
 
 
 # conversion to/from Polynomial type
@@ -83,22 +95,22 @@ For a `SimplePolynomial`, `p`, use `p[k]` to read the coefficient
 of `x^k`. In particular, `p[0]` is the constant term. If `k` is
 larger than the degree of the polynomial, `0` is returned.
 """
-function getindex(p::SimplePolynomial{T}, k::Int) where T
+function getindex(p::SimplePolynomial, k::Int)
     n = length(p.data)
     if k<0
         error("index [$k] must be nonnegative")
     end
 
     if k>=n
-        return zero(T)
+        return 0
     end
 
     return p.data[k+1]
 end
 
 # This implements evaluation
-function (p::SimplePolynomial)(x::T) where T<:Number
-    result = zero(T)
+function (p::SimplePolynomial)(x)
+    result = 0
     n = degree(p)
     for j=n:-1:0
         result *= x
@@ -107,22 +119,55 @@ function (p::SimplePolynomial)(x::T) where T<:Number
     return result
 end
 
-# This is a placeholder `show`. We can better!
-function show(io::IO, p::SimplePolynomial)
-    print(io,"SimplePolynomial([")
-    n = length(p.data)
-    for j=1:n-1
-        print(io,"$(p.data[j]),")
+
+"""
+`getx()` is a convenient way to create `SimplePolynomial(0,1)`.
+Typical use:
+```
+x = getx()
+p = 2 + x - 3*x^2
+```
+"""
+getx() = SimplePolynomial(0,1)
+
+zero(::Type{SimplePolynomial}) = SimplePolynomial(zero(Int))
+one(::Type{SimplePolynomial}) = SimplePolynomial(one(Int))
+
+
+roots(p::SimplePolynomial) = roots(Polynomial(p))
+
+"""
+`derivative(P::SimplePolynomial)` returns the derivative of `P`.
+May also be found as `P'`.
+"""
+function derivative(P::SimplePolynomial)
+    if degree(P)<1
+        return SimplePolynomial(0)
     end
-    print("$(p.data[end])])")
+    data = [k*P[k] for k=1:degree(P)]
+    return SimplePolynomial(data)
+end
+adjoint(P::SimplePolynomial) = derivative(P)
+
+
+"""
+`integrate(P::SimplePolynomial)` returns the integral of `P`
+with constant term equal to zero.
+"""
+function integrate(P::SimplePolynomial)
+    if P==0
+        return P
+    end
+    data = [P[k-1]//k for k=1:degree(P)+1]
+    prepend!(data,0)
+    return SimplePolynomial(data)
 end
 
-#
-# function show(io::IO, p::SimplePolynomial{T}) where T
-#     print(io,"SimplePolynomial(",p.data,")")
-# end
 
 
+
+include("small.jl")
+include("show.jl")
 include("arithmetic.jl")
 include("gcd.jl")
 

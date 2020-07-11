@@ -7,8 +7,12 @@ export monic
 
 function (+)(p::SimplePolynomial, q::SimplePolynomial)
     n = max(degree(p), degree(q))
-    coefs = [ p[k]+q[k] for k=0:n ]
-    return SimplePolynomial(coefs)
+    T = typeof(p(1)+q(1))
+    c = zeros(T,n+1)
+    for j=0:n
+        c[j+1] = p[j] + q[j]
+    end
+    return SimplePolynomial(c)
 end
 
 # polynomial + number
@@ -62,10 +66,10 @@ end
 
 # Integer exponentiation
 
-function (^)(p::SimplePolynomial{T}, k::S) where{T, S<:Integer}
+function (^)(p::SimplePolynomial, k::S) where S<:Integer
     @assert k>=0 "Exponent must be nonnegative [$k]"
     if k==0
-        return SimplePolynomial(T(1))
+        return SimplePolynomial(Int(1))
     end
 
     if k==1
@@ -110,7 +114,7 @@ function monic(p::SimplePolynomial)::SimplePolynomial
 end
 
 
-function divrem(a::SimplePolynomial{S}, b::SimplePolynomial{T}) where {S,T}
+function divrem(a::SimplePolynomial, b::SimplePolynomial)
     if b==0
         DivideError()
     end
