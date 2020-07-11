@@ -50,7 +50,7 @@ q = (1+3x)*(1-x)+5
 @test small(big(3)) == 3
 @test typeof(small(big(3))) == typeof(3)
 
-@test roots(1+x^2) == [-im ; im]
+@test roots(1-x^2) == [-1 ; 1]
 
 p = 3x//2 - 5x^2 + (2-im)*x^3
 @test derivative(integrate(p)) == p
