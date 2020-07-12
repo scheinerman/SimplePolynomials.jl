@@ -48,8 +48,8 @@ end
 function (*)(p::SimplePolynomial,q::SimplePolynomial)
     n = degree(p)+degree(q)
 
-    if n<0
-        return p+q
+    if p==0 || q==0
+        return SimplePolynomial(0)
     end
 
     coefs = [ p[0]*q[0] for i=0:n ]
