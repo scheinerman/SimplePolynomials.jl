@@ -7,13 +7,13 @@ export integerize
 # The all_ones_denom function checks if all the coefficients
 # are (Gaussian) integers, but perhaps of Rational type.
 
-function all_ones_denom(list::Vector{T})::Bool where T <: Integer
+function all_ones_denom(list::Vector{T})::Bool where T <: IntegerX
     return true
 end
-
-function all_ones_denom(list::Vector{Complex{T}})::Bool where T <: Integer
-    return true
-end
+#
+# function all_ones_denom(list::Vector{Complex{T}})::Bool where T <: Integer
+#     return true
+# end
 
 function all_ones_denom(list::Vector{T})::Bool where T<:Real
     return all(denominator.(list) .== 1)
@@ -34,6 +34,8 @@ end
 function _top(x::T) where T<:Complex
     return numerator(real(x)) + numerator(imag(x))*im
 end
+
+_top(x::Mod) = x
 
 """
 `integerize(p::SimplePolynomial)` is useful when `p`

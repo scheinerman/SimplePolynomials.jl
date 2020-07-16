@@ -1,4 +1,5 @@
 module SimplePolynomials
+using Mods
 
 import Base: getindex, (==), show, zero, one, eltype, adjoint
 import Polynomials: degree, Polynomial, coeffs, roots, derivative, integrate
@@ -6,7 +7,7 @@ import Polynomials: degree, Polynomial, coeffs, roots, derivative, integrate
 export SimplePolynomial, degree, coeffs, getx, Polynomial, roots, derivative, integrate
 
 # IntegerX is any sort of real or Gaussian integer
-IntegerX = Union{S,Complex{S}} where S<:Integer
+IntegerX = Union{S,Complex{S},Mod} where S<:Integer
 
 # RationalX is a Rational or Complex Rational based on integers
 RationalX = Union{Rational{S},Complex{Rational{S}}} where S<:Integer

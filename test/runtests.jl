@@ -1,4 +1,4 @@
-using Test, SimplePolynomials, Polynomials
+using Test, SimplePolynomials, Polynomials, Mods
 
 a = SimplePolynomial(1,1,1)
 @test a(10) == 111
@@ -54,3 +54,6 @@ q = (1+3x)*(1-x)+5
 
 p = 3x//2 - 5x^2 + (2-im)*x^3
 @test derivative(integrate(p)) == p
+
+p =  SimplePolynomial(Mod{13}.(0:4))
+@test p(0) == Mod{13}(0)
