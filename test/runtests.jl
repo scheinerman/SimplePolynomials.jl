@@ -4,6 +4,7 @@ a = SimplePolynomial(1,1,1)
 @test a(10) == 111
 @test a[0] == 1
 @test a[9] == 0
+@test lead(a) == 1
 
 
 @test a+a == 2a

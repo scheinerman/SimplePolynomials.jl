@@ -4,7 +4,8 @@ using Mods
 import Base: getindex, (==), show, zero, one, eltype, adjoint
 import Polynomials: degree, Polynomial, coeffs, roots, derivative, integrate
 
-export SimplePolynomial, degree, coeffs, getx, Polynomial, roots, derivative, integrate
+export SimplePolynomial, degree, coeffs, getx, Polynomial, roots
+export derivative, integrate, lead
 
 # IntegerX is any sort of real or Gaussian integer
 IntegerX = Union{S,Complex{S},Mod} where S<:Integer
@@ -44,6 +45,13 @@ SimplePolynomial() = SimplePolynomial([0])
 
 coeffs(p::SimplePolynomial) = copy(p.data)
 eltype(p::SimplePolynomial) = eltype(p.data)
+
+"""
+`lead(p::SimplePolynomial)` returns the coefficient of the highest
+power of `x` in the polynomial `p`. This is nonzero unless `p` is
+the zero polynomial.
+"""
+lead(p::SimplePolynomial) = p.data[end]
 
 
 # conversion to/from Polynomial type

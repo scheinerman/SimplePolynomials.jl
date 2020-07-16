@@ -10,7 +10,8 @@
 
 
 This module defines the `SimplePolynomial` type. These are polynomials
-with exact coefficients (integers, Gaussian integers, or Gaussian rationals).
+with exact coefficients (integers, Gaussian integers, Gaussian rationals,
+or `Mod`s).
 
 
 ## Construction
@@ -31,6 +32,14 @@ Note that extra zeros do not affect the result:
 ```
 julia> SimplePolynomial(3,-2,0,1) == SimplePolynomial(3,-2,0,1,0,0)
 true
+```
+
+These polynomials support `Mod` coefficients:
+```
+julia> using Mods
+
+julia> p = SimplePolynomial( Mod{7}.(1:5) )
+Mod{7}(1) + Mod{7}(2)*x + Mod{7}(3)*x^2 + Mod{7}(4)*x^3 + Mod{7}(5)*x^4
 ```
 
 #### Using `getx`
@@ -63,6 +72,7 @@ assign to a coefficient; that is, `p[k]=c` does not work.
 * `monic(p)` returns a new `SimplePolynomial` formed by dividing
 all the coefficients by the leading term.
 * `eltype(p)` returns the data type of the coefficients.
+* `lead(p)` returns the coefficient of the highest power of `x` in `p`.
 
 
 ## Arithmetic
