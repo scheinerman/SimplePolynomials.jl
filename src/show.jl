@@ -59,8 +59,10 @@ of `p`.
 function string(p::SimplePolynomial)
     str = string(Polynomial(integerize(p)))
 
-    skip = length("Polynomial(")+1
-
+    # delete everything up to and including the open paren and
+    # the closing paren
+    
+    skip = findfirst(x -> x == '(', str)+1
     str = str[skip:end-1]
     return str
 end
