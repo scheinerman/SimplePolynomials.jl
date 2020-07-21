@@ -10,8 +10,9 @@
 
 
 This module defines the `SimplePolynomial` type. These are polynomials
-with exact coefficients (integers, Gaussian integers, Gaussian rationals,
-or `Mod`s).
+with exact coefficients (integers, rationals, Gaussian integers, Gaussian
+rationals, or `Mod`s). The objective is exactness perhaps at the
+expense of computational efficiency. 
 
 ---
 
@@ -20,7 +21,7 @@ or `Mod`s).
 The `SimpleRationalFunction` type is now part of this package.
 Be sure to `Pkg.rm("SimpleRationalFunctions")`.
 
---- 
+---
 
 
 ## Construction
