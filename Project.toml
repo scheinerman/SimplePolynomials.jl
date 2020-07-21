@@ -1,6 +1,6 @@
 name = "SimplePolynomials"
 uuid = "cc47b68c-3164-5771-a705-2bc0097375a0"
-version = "0.0.4"
+version = "0.0.5"
 
 [deps]
 Polynomials = "f27b6e38-b328-58d1-80ce-0feddd5e7a45"

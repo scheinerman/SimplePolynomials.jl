@@ -41,10 +41,17 @@ function small(x::Complex{Rational{T}}) where T<:Integer
     return x
 end
 
+small(x::Mod) = x
+
 
 small(p::SimplePolynomial) = SimplePolynomial(small.(p.data))
 
 
 
 
-big(P::SimplePolynomial) = SimplePolynomial(big.(P.data))
+function big(P::SimplePolynomial)
+    if eltype(P) <: Mod
+        return P
+    end
+    SimplePolynomial(big.(P.data))
+end

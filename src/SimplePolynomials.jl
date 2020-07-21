@@ -2,6 +2,8 @@ module SimplePolynomials
 using Mods
 
 import Base: getindex, (==), show, zero, one, eltype, adjoint
+import Base: numerator, denominator, big
+
 import Polynomials: degree, Polynomial, coeffs, roots, derivative, integrate
 
 export SimplePolynomial, degree, coeffs, getx, Polynomial, roots
@@ -173,11 +175,11 @@ function integrate(P::SimplePolynomial)
 end
 
 
-
-
+include("SimpleRationalFunctions.jl")
 include("small.jl")
 include("show.jl")
 include("arithmetic.jl")
+include("rat_arith.jl")
 include("gcd.jl")
 
 end
