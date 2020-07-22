@@ -6,8 +6,7 @@ function (+)(f::SimpleRationalFunction, g::SimpleRationalFunction)
     return SimpleRationalFunction(top, bot)
 end
 
-function (+)(f:# inv(p::SimplePolynomial) = SimpleRationalFunction(1, p)
-:SimpleRationalFunction, p::SimplePolynomial)
+function (+)(f::SimpleRationalFunction, p::SimplePolynomial)
     return f + SimpleRationalFunction(p)
 end
 (+)(p::SimplePolynomial, f::SimpleRationalFunction) = f + p
