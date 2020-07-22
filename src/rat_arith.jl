@@ -6,7 +6,8 @@ function (+)(f::SimpleRationalFunction, g::SimpleRationalFunction)
     return SimpleRationalFunction(top, bot)
 end
 
-function (+)(f::SimpleRationalFunction, p::SimplePolynomial)
+function (+)(f:# inv(p::SimplePolynomial) = SimpleRationalFunction(1, p)
+:SimpleRationalFunction, p::SimplePolynomial)
     return f + SimpleRationalFunction(p)
 end
 (+)(p::SimplePolynomial, f::SimpleRationalFunction) = f + p
@@ -38,7 +39,7 @@ end
 
 # division
 inv(f::SimpleRationalFunction) = SimpleRationalFunction(f.den, f.num)
-# inv(p::SimplePolynomial) = SimpleRationalFunction(1, p)
+
 function inv(p::SimplePolynomial)
     T = eltype(p)
     SimpleRationalFunction(T(1),p)
