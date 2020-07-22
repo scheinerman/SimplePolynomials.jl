@@ -38,7 +38,13 @@ end
 
 # division
 inv(f::SimpleRationalFunction) = SimpleRationalFunction(f.den, f.num)
-inv(p::SimplePolynomial) = SimpleRationalFunction(1, p)
+# inv(p::SimplePolynomial) = SimpleRationalFunction(1, p)
+function inv(p::SimplePolynomial)
+    T = eltype(p)
+    SimpleRationalFunction(T(1),p)
+end
+
+
 
 SimpleThing = Union{SimplePolynomial,SimpleRationalFunction}
 

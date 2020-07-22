@@ -108,9 +108,9 @@ is returned.
 """
 function monic(p::SimplePolynomial)::SimplePolynomial
     if p==0
-        return p/1
+        return p
     end
-    return p/p.data[end]
+    return p/lead(p)
 end
 
 
@@ -118,6 +118,10 @@ function divrem(a::SimplePolynomial, b::SimplePolynomial)
     if b==0
         DivideError()
     end
+
+    # DEBUG #
+    println("a = $(a.data) with element type $(eltype(a))")
+    println("b = $(b.data) with element type $(eltype(b))")
 
     ST = typeof((a[0]+b[0])//1)
 
@@ -128,10 +132,10 @@ function divrem(a::SimplePolynomial, b::SimplePolynomial)
         return SimplePolynomial(), a
     end
 
-    lead = a.data[end] // b.data[end]
+    leader = a.data[end] // b.data[end]
 
     coefs = zeros(ST,da-db+1)
-    coefs[end] = lead
+    coefs[end] = leader
 
     q = SimplePolynomial(coefs)
     aa = a - b*q

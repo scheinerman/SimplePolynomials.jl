@@ -2,7 +2,7 @@ module SimplePolynomials
 using Mods
 
 import Base: getindex, (==), show, zero, one, eltype, adjoint
-import Base: numerator, denominator, big
+import Base: numerator, denominator, big, inv
 
 import Polynomials: degree, Polynomial, coeffs, roots, derivative, integrate
 
