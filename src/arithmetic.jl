@@ -124,8 +124,9 @@ function divrem(a::SimplePolynomial, b::SimplePolynomial)
     if eltype(a) <: Mod || eltype(b) <: Mod
         ST = eltype(a)
     else
-        ST = promote_type(eltype(a), eltype(b))
+        ST = typeof((lead(a)+lead(b))//1)
     end
+
 
     da = degree(a)
     db = degree(b)
@@ -138,6 +139,7 @@ function divrem(a::SimplePolynomial, b::SimplePolynomial)
 
     coefs = zeros(ST, da - db + 1)
     coefs[end] = leader
+
 
     q = SimplePolynomial(coefs)
     aa = a - b * q

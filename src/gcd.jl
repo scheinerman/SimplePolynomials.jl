@@ -3,13 +3,13 @@ import Base: gcd, lcm
 
 function gcd(a::SimplePolynomial, b::SimplePolynomial)
     try
-        d = _gcd(a,b)
+        d = integerize(_gcd(a,b))
         return d
     catch
         aa = big(a)
         bb = big(b)
         dd = _gcd(aa,bb)
-        d = small(dd)
+        d = integerize(small(dd))
         return d
     end
 end
