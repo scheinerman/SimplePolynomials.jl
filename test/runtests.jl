@@ -33,7 +33,7 @@ end
 end
 
 @testset "PolyTypes" begin
-    # global b
+    global b
     @test eltype(b) == Int
     @test eltype(b + im) == Complex{Int}
     @test eltype(b / (2im)) == Complex{Rational{Int}}
