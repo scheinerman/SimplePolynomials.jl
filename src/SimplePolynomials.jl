@@ -138,8 +138,12 @@ Typical use:
 x = getx()
 p = 2 + x - 3*x^2
 ```
+Use `getx(T)` for coefficients of type `T`, e.g., `getx(Mod{13})`.
 """
-getx() = SimplePolynomial(0,1)
+function getx(T=Int)
+    return SimplePolynomial(T(0),T(1))
+end
+
 
 zero(::Type{SimplePolynomial}) = SimplePolynomial(zero(Int))
 one(::Type{SimplePolynomial}) = SimplePolynomial(one(Int))

@@ -32,11 +32,15 @@ end
     @test z(-5) == a(-5) + im
 end
 
-@testset "Poly Types" begin
+@testset "PolyTypes" begin
+    # global b
     @test eltype(b) == Int
     @test eltype(b + im) == Complex{Int}
     @test eltype(b / (2im)) == Complex{Rational{Int}}
-    @test eltype(big(b)) == BigInt
+    b = big(b)
+    @test eltype(b) == BigInt
+    b = small(b)
+    @test eltype(b) == Int
 end
 
 @testset "Poly GCD" begin
@@ -96,6 +100,7 @@ end
 end
 
 @testset "Rational Mod" begin
+    x = getx(Mod{13})
     p = Mod{13}(1) + x
     q = Mod{13}(2) + 3x
     f = p / q
