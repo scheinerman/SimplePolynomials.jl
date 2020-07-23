@@ -37,6 +37,7 @@ end
 
 
 SimplePolynomial() = SimplePolynomial([0])
+SimplePolynomial(p::SimplePolynomial) = SimplePolynomial(p.data)
 
 # equality checking
 

@@ -1,4 +1,4 @@
-# SimplePolynomials
+# The `SimplePolynomials` Module
 
 
 [![Build Status](https://travis-ci.org/scheinerman/SimplePolynomials.jl.svg?branch=master)](https://travis-ci.org/scheinerman/SimplePolynomials.jl)
@@ -9,22 +9,22 @@
 
 
 
-This module defines the `SimplePolynomial` type. These are polynomials
+This module defines two types:
+
+
+* `SimplePolynomial`: These are polynomials
 with exact coefficients (integers, rationals, Gaussian integers, Gaussian
-rationals, or `Mod`s). The objective is exactness perhaps at the
-expense of computational efficiency. 
-
----
-
-## Alert!
-
-The `SimpleRationalFunction` type is now part of this package.
-Be sure to `Pkg.rm("SimpleRationalFunctions")`.
+rationals, or `Mod`s). The objective is exactness perhaps at thMe
+expense of computational efficiency.
+* `SimpleRationalFunction`: These are fractions whose numerator and
+denominator are `SimplePolynomial`s.
 
 ---
 
 
 ## Construction
+
+### Polynomials
 
 A `SimplePolynomial` is constructed by giving a list of its
 coefficients starting with constant term (coefficient of `x^0`). The
@@ -52,7 +52,21 @@ julia> p = SimplePolynomial( Mod{7}.(1:5) )
 Mod{7}(1) + Mod{7}(2)*x + Mod{7}(3)*x^2 + Mod{7}(4)*x^3 + Mod{7}(5)*x^4
 ```
 
-#### Using `getx`
+### Rational Functions
+
+A `SimpleRationalFunction` can be created simply by dividing two polynomials.
+Common factors between numerator and denominator are cancelled and the
+expression is presented so that the denominator is a monic (leading coefficient  
+is one).
+
+The `inv` function may also be applied to a polynomial; the result of `inv(p)`
+is the same as `1/p`.
+
+More formally, one may use `SimpleRationalFunction(p,q)` and this is
+equivalent to `p/q`.
+
+
+### Using `getx`
 
 The function `getx()` is a short cut that returns
 `SimplePolynomial(0,1)`. By assigning this to a variable named `x`
@@ -63,7 +77,19 @@ x
 
 julia> p = x^3 - 2x + 3
 3 - 2*x + x^3
+
+julia> (1-x)/(2-3x)
+(-1//3 + 1//3*x) / (-2//3 + x)
 ```
+
+The function `getx` takes an optional argument that is a number type
+(integer, rational, Gaussian integer, Gaussian rational, or mod):
+```
+julia> getx(Mod{13})
+Mod{13}(1)*x
+```
+
+
 
 
 

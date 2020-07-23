@@ -7,70 +7,84 @@ x = getx()
 p = (1 + x + x^3 - x^2)
 q = (1 + 3x) * (1 - x) + 5
 
-@testset "Poly Construction" begin
-    @test a(10) == 111
-    @test a[0] == 1
-    @test a[9] == 0
-    @test lead(a) == 1
-    @test a == 1 + x + x^2
-    @test a * b == b * a
-    @test a + b == b + a
-    @test a - a == 0
-    @test 2a - b == a + a + (-b)
+@testset "Polynomial Constructors" begin
+    @test p == SimplePolynomial(1, 1, -1, 1)
+    @test p == SimplePolynomial([1, 1, -1, 1])
+    @test c == SimplePolynomial(c)
+    @test c == SimplePolynomial(c.data)
+    @test x + Mod{13}(2) == SimplePolynomial([Mod{13}(2), Mod{13}(1)])
 end
 
-@testset "Poly Arithmetic" begin
+@testset "Rational Function Constructors" begin
+    f = p / q
+    @test SimpleRationalFunction(p, q) == f
+    @test f(1) == p(1) // q(1)
+    f = inv(p)
+    @test f(1) * p(1) == 1
+end
+
+
+
+
+@testset "Polynomial Arithmetic" begin
     @test a + a == 2a
     @test (a + a + a) / 3 == a
     @test a - a == 0
     @test a * a == SimplePolynomial(1, 2, 3, 2, 1)
     @test a * a * a == a^3
+    @test eltype(b) == Int
 end
 
-@testset "Complex Poly" begin
+@testset "Rational Function Arithmetic" begin
+    f = p / q
+    g = a / b
+    @test f * g == (p * a) / (b * q)
+    @test f + g == (p * b + a * q) // (b * q)
+    @test f - g == (-g) + f
+    @test f / g == (p * b) / (a * q)
+    @test inv(f) == q / p
+end
+
+@testset "Complex numbers" begin
     z = a + im
     @test z(-5) == a(-5) + im
+    f = (im + x) / (2 * im * x)
+    @test 2f(1) == 1 - im
+    z = (x-im)*(x+im)
+    @test z == x^2 + 1
 end
 
-@testset "PolyTypes" begin
-    global b
-    @test eltype(b) == Int
-    @test eltype(b + im) == Complex{Int}
-    @test eltype(b / (2im)) == Complex{Rational{Int}}
-    b = big(b)
-    @test eltype(b) == BigInt
-    b = small(b)
-    @test eltype(b) == Int
+@testset "Mod numbers" begin
+    z = SimplePolynomial(Mod{13}.([1,2,3]))
+    @test z(1) == Mod{13}(6)
+    f = inv(z)
+    @test f(1) == inv(Mod{13}(6))
 end
 
-@testset "Poly GCD" begin
-    @test gcd(a, b) == 1
+@testset "Polynomial GCD" begin
+    p = (x-1)^2 * (x-2)
+    q = (x-1) * (x-3)
+    @test gcd(p,q) == x-1
 
-    @test gcd(a * b, a * c) == a
-    @test gcd(a^5, a^3) == a^3
+    p = (x-1)^3 * (x-3)
+    @test gcd(p,p') == (x-1)^2
 
-    @test lcm(a * b, b * c) == monic(a * b * c)
-    @test gcd(p, q) == 1
-    @test gcd(p * p, q * q) == 1
+    c = Mod{13}.(coeffs(p))
+    p = SimplePolynomial(c)
+    @test gcd(p,p') == (x-1)^2
 end
 
-@testset "Conversion" begin
-    Pc = Polynomial(c)
-    @test SimplePolynomial(Pc) == c
-    @test roots(1 - x^2) == [-1; 1]
+@testset "Size change" begin
+    B = big(b)
+    @test B == b
+    @test eltype(B) == BigInt
+    @test eltype(small(B)) == Int
+
+    r = a/b
+    @test eltype(numerator(r)) == Rational{Int}
+    r = big(r)
+    @test eltype(denominator(r)) == Rational{BigInt}
 end
-
-@testset "DivRem" begin
-    q, r = divrem(c, a)
-    @test q * a + r == c
-end
-
-
-@testset "Big/Small" begin
-    @test small(big(3)) == 3
-    @test typeof(small(big(3))) == typeof(3)
-end
-
 
 @testset "PolyCalculus" begin
     p = 3x // 2 - 5x^2 + (2 - im) * x^3
@@ -108,4 +122,5 @@ end
 end
 
 
-@test true
+
+nothing
