@@ -14,7 +14,7 @@ This module defines two types:
 
 * `SimplePolynomial`: These are polynomials
 with exact coefficients (integers, rationals, Gaussian integers, Gaussian
-rationals, or `Mod`s). The objective is exactness perhaps at thMe
+rationals, or `Mod`s). The objective is exactness perhaps at the
 expense of computational efficiency.
 * `SimpleRationalFunction`: These are fractions whose numerator and
 denominator are `SimplePolynomial`s.
@@ -79,7 +79,7 @@ julia> coeffs(p)
  11
   4
 ```
-In addition, use square brackets to retrieve a coefficient
+Use square brackets to retrieve a coefficient
 associated with a given power:
 ```
 julia> p[2]     # coefficient of x^2
@@ -379,7 +379,7 @@ julia> p.(ans)
 
 ## Calculus
 
-`derivative()` returns the derivative of a `SiplePolynomial`
+`derivative()` returns the derivative of a `SimplePolynomial`
 or `SimpleRationalFunction`. We may also use `p'` for
 `derivative(p)`.
 ```
@@ -431,9 +431,8 @@ ERROR: MethodError: no method matching integral(::SimpleRationalFunction)
 
 The `Polynomials` module also defines polynomials with many additional
 properties. However, those polynomials allow floating point coefficients.
-The purpose here is to enforce exactness.
 
-Conversion between a `SimplePolynomial` type and a `Polynomial` type is
+Conversion between a `SimplePolynomial`  and a `Polynomial`  is
 simple:
 * If `p` is a `SimplePolynomial`, then `Polynomial(p)` is the corresponding
 `Polynomial` type.
