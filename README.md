@@ -60,7 +60,7 @@ julia> using Mods
 julia> p = Mod{17}(3) - 2x^2
 Mod{17}(3) + Mod{17}(15)*x^2
 ```
-The coefficients of a `SimplePolynomial` may not be of floating
+The coefficients of a `SimplePolynomial` may not be floating
 point numbers.
 
 
