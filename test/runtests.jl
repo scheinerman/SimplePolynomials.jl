@@ -88,7 +88,7 @@ end
 
 @testset "PolyCalculus" begin
     p = 3x // 2 - 5x^2 + (2 - im) * x^3
-    @test derivative(integrate(p)) == p
+    @test derivative(integral(p)) == p
 end
 
 @testset "Mod Polys" begin

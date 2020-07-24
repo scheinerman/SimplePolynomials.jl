@@ -67,7 +67,12 @@ end
 # Integer exponentiation
 
 function (^)(p::SimplePolynomial, k::S) where {S<:Integer}
-    @assert k >= 0 "Exponent must be nonnegative [$k]"
+
+    if k<0
+        f = inv(p)
+        return f^(-k)
+    end
+
     if k == 0
         return SimplePolynomial(Int(1))
     end

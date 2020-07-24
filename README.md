@@ -19,141 +19,312 @@ expense of computational efficiency.
 * `SimpleRationalFunction`: These are fractions whose numerator and
 denominator are `SimplePolynomial`s.
 
----
 
+# Basics
 
-## Construction
+## Polynomials
 
-### Polynomials
-
-A `SimplePolynomial` is constructed by giving a list of its
-coefficients starting with constant term (coefficient of `x^0`). The
-coefficients must be one of these types: `Integer`, `Rational{Integer}`,
-`Complex{Integer}`, or `Complex{Rational{Integer}}`.
-
-For example, to create the polynomial `3 - 2x + x^3` we can do
-either of the following:
-* `SimplePolynomial([3, -2, 0, 1])`
-* `SimplePolynomial(3,-2,0,1)`
-
-In both cases, the result is `3 - 2*x + x^3`.
-
-Note that extra zeros do not affect the result:
+A `SimplePolynomial` is a polynomial in one variable with exact
+coefficients. There are a few options to create a `SimplePolynomial`:
 ```
-julia> SimplePolynomial(3,-2,0,1) == SimplePolynomial(3,-2,0,1,0,0)
-true
+julia> using SimplePolynomials
+
+julia> p = SimplePolynomial([2,-4,1])
+2 - 4*x + x^2
+
+julia> p = SimplePolynomial(2,-4,1,0)
+2 - 4*x + x^2
 ```
-
-These polynomials support `Mod` coefficients:
-```
-julia> using Mods
-
-julia> p = SimplePolynomial( Mod{7}.(1:5) )
-Mod{7}(1) + Mod{7}(2)*x + Mod{7}(3)*x^2 + Mod{7}(4)*x^3 + Mod{7}(5)*x^4
-```
-
-### Rational Functions
-
-A `SimpleRationalFunction` can be created simply by dividing two polynomials.
-Common factors between numerator and denominator are cancelled and the
-expression is presented so that the denominator is a monic (leading coefficient  
-is one).
-
-The `inv` function may also be applied to a polynomial; the result of `inv(p)`
-is the same as `1/p`.
-
-More formally, one may use `SimpleRationalFunction(p,q)` and this is
-equivalent to `p/q`.
-
-
-### Using `getx`
-
-The function `getx()` is a short cut that returns
-`SimplePolynomial(0,1)`. By assigning this to a variable named `x`
-the creation of polynomials is very natural:
+The `getx()` function returns `SimplePolynomial(0,1)`. Assigning that
+result to a variable named `x` makes creating polynomials rather
+natural.
 ```
 julia> x = getx()
 x
 
-julia> p = x^3 - 2x + 3
-3 - 2*x + x^3
-
-julia> (1-x)/(2-3x)
-(-1//3 + 1//3*x) / (-2//3 + x)
+julia> p = 2 - 4x + x^2
+2 - 4*x + x^2
 ```
 
-The function `getx` takes an optional argument that is a number type
-(integer, rational, Gaussian integer, Gaussian rational, or mod):
+Polynomial coefficients may also be rational numbers, Gaussian integers,
+Gaussian rationals, or modular numbers.
 ```
-julia> getx(Mod{13})
-Mod{13}(1)*x
+julia> p = 3x^2 - im*x + 4
+4 - im*x + 3*x^2
+
+julia> p = (3//2)x^2 - 4
+-4//1 + 3//2*x^2
+
+julia> using Mods
+
+julia> p = Mod{17}(3) - 2x^2
+Mod{17}(3) + Mod{17}(15)*x^2
+```
+The coefficients of a `SimplePolynomial` may not be of floating
+point numbers.
+
+
+### Coefficients
+
+The coefficients of a `SimplePolynomial` can be accessed with the
+`coeffs` function:
+```
+julia> p = 1 -5x + 11x^2 + 4x^3
+1 - 5*x + 11*x^2 + 4*x^3
+
+julia> coeffs(p)
+4-element Array{Int64,1}:
+  1
+ -5
+ 11
+  4
+```
+In addition, use square brackets to retrieve a coefficient
+associated with a given power:
+```
+julia> p[2]     # coefficient of x^2
+11
+
+julia> p[0]     # constant term, the zero index is allowed
+1
+
+julia> p[11]    # zero is returned if the index exceeds the degree
+0
+
+julia> p[-1]    # negative indices are not allowed
+ERROR: index [-1] must be nonnegative
+```
+Note that a `SimplePolynomial` is an immutable object and one
+may not change its coefficients.
+```
+julia> p = 3x^2 - 5x +1
+1 - 5*x + 3*x^2
+
+julia> p[1] = 6
+ERROR: MethodError: no method matching setindex!(::SimplePolynomial, ::Int64, ::Int64)
+```
+
+
+
+The `degree` function returns the degree of the polynomial and
+`lead` returns the coefficient of that term.
+```
+julia> degree(p)
+3
+
+julia> lead(p)
+4
+```
+
+Nonzero constant polynomials have degree zero. The zero polynomial
+should have degree `-∞` but this is not an `Int`, so we return `-1`.
+This is also the only case in which `lead` returns `0`:
+```
+julia> p = SimplePolynomial(0)
+0
+
+julia> degree(p)
+-1
+
+julia> lead(p)
+0
+```
+
+The function `monic(p)` returns a `SimplePolynomial` formed
+by dividing all coefficients by the leading term:
+```
+julia> p = 4-8x + 2x^2
+4 - 8*x + 2*x^2
+
+julia> monic(p)
+2 - 4*x + x^2
+
+julia> p = 3x^2-5
+-5 + 3*x^2
+
+julia> monic(p)
+-5//3 + x^2
+```
+
+
+The function `eltype` returns the Julia type of the coefficients.
+
+
+## Rational Functions
+
+A `SimpleRationalFunction` is the ratio of two polynomials:
+```
+julia> p = 3x + x^3
+3*x + x^3
+
+julia> q = 1-x+x^2
+1 - x + x^2
+
+julia> p/q
+(3*x + x^3) / (1 - x + x^2)
+```
+A `SimpleRationalFunction` is always represented as
+the ratio of relatively prime polynomials; that is, any
+common factors between numerator and denominator are cancelled.
+```
+julia> p = (x-1)*(x-2)*(x-3)
+-6 + 11*x - 6*x^2 + x^3
+
+julia> q = (x-1)*(x+5)
+-5 + 4*x + x^2
+
+julia> p/q
+(6 - 5*x + x^2) / (5 + x)
+```
+Furthermore, the denominator of a `SimpleRationalFunction` is always a
+*monic* polynomial; that is, the leading coefficient is one.
+```
+julia> (x-3)/(2x^2-5)
+(-3//2 + 1//2*x) / (-5//2 + x^2)
+```
+Of course, division by zero is forbidden:
+```
+julia> p = x^2-5;
+
+julia> q = SimplePolynomial(0);
+
+julia> p/q
+ERROR: Denominator cannot be zero
+```
+
+### Numerator and denominator
+
+Use `numerator` and `denominator` to extract the relevant
+parts of a `SimpleRationalFunction`:
+```
+julia> f = (x^2 - 3x + 2) / (x-4)
+(2 - 3*x + x^2) / (-4 + x)
+
+julia> numerator(f)
+2 - 3*x + x^2
+
+julia> denominator(f)
+-4 + x
+```
+
+### Three-line  printing
+
+The `string3` function can be used to give a nice visualization
+of a `SimpleRationalFunction`:
+```
+julia> f = (x^2 - 3x + 2) / (x-4)
+(2 - 3*x + x^2) / (-4 + x)
+
+julia> println(string3(f))
+2 - 3*x + x^2
+-------------
+   -4 + x
 ```
 
 
 
 
+# Operations
 
-## Basics
-
-For a `SimplePolynomial` we have the following basic operations:
-* `degree(p)` returns the degree of the polynomial (the zero polynomial
-  returns `-1`).
-* `p[k]` returns the coefficient of `x^k`. If `k` is larger than the degree,
-then `0` is returned. The constant term is `p[0]`. An error is thrown if
-`k` is negative. Note that `SimplePolynomial`s are immutable, so one cannot
-assign to a coefficient; that is, `p[k]=c` does not work.
-* `p(x)` evaluates the polynomial at `x` (`x` may be any type
-  including floating point values or another `SimplePolynomial`).
-* `coeffs(p)` returns (a copy of) the list of coefficients.
-* `monic(p)` returns a new `SimplePolynomial` formed by dividing
-all the coefficients by the leading term.
-* `eltype(p)` returns the data type of the coefficients.
-* `lead(p)` returns the coefficient of the highest power of `x` in `p`.
 
 
 ## Arithmetic
 
-The standard operations of addition `+`, subtraction `-`, and
-multiplication `*` can be performed on any two `SimplePolynomial`s,
-or on a `SimplePolynomial` and an exact number.
-Division of a `SimplePolynomial` by an exact number is also permitted.
+The usual operations of addition `+`, subtraction `-`, multiplication `*`,
+and division `/` may be used with any combination of exact numbers,
+polynomials, or rational functions.
 
-Exponentiation is also supported; one may raise a `SimplePolynomial`
-to a nonnegative integer exponent:
+Exponentiation by an integer power may be performed for any
+`SimplePolynomial` or `SimpleRationalFunction`.
+
 ```
-julia> x = getx()
-x
+julia> p = 1+x
+1 + x
 
-julia> for k=0:6
-       println((1+x)^k)
+julia> for k=-3:3
+       println(p^k)
        end
+1 / (1 + 3*x + 3*x^2 + x^3)
+1 / (1 + 2*x + x^2)
+1 / (1 + x)
 1
 1 + x
 1 + 2*x + x^2
 1 + 3*x + 3*x^2 + x^3
-1 + 4*x + 6*x^2 + 4*x^3 + x^4
-1 + 5*x + 10*x^2 + 10*x^3 + 5*x^4 + x^5
-1 + 6*x + 15*x^2 + 20*x^3 + 15*x^4 + 6*x^5 + x^6
 ```
 
-
-The quotient of polynomials need not be a polynomial. However, we
-implement the `divrem` function that returns a quotient and a remainder
-for a pair of inputs. That is, if `q,r = divrem(a,b)` then we have that
-`q*b+r==a` and `degree(r)<degree(b)`. Of course, `b` must not be zero.
+For polynomials, division results in a `SimpleRationalFunction`.
+Alternatively, use `diverm` to find the quotient and remainder:
 ```
-julia> a = 3 + 5x - x^2 + x^3
-3 + 5*x - x^2 + x^3
+julia> a = 3x^3 + 5x -1
+-1 + 5*x + 3*x^3
 
-julia> b = x^2+1
-1 + x^2
+julia> b = x^2+3
+3 + x^2
 
-julia> q,r = divrem(a,b)
-(-1 + x, 4 + 4*x)
+julia> (q,r) = divrem(a,b)
+(3*x, -1 - 4*x)
 
 julia> q*b + r == a
 true
 ```
+
+
+## Evaluation
+
+Polynomials and rational functions behave as functions; they can be
+evaluated as follows:
+```
+julia> p = 3x^2 + 5x +1
+1 + 5*x + 3*x^2
+
+julia> p(10)
+351
+
+julia> p(0.5)  # evaluation with a float is permitted
+4.25
+
+julia> f = p/(x+5)
+(1 + 5*x + 3*x^2) / (5 + x)
+
+julia> f(10)
+117//5
+
+julia> f(3.2 - 4.1im)   
+4.575609756097562 - 9.812195121951218im
+```
+
+The argument of a polynomial or rational function may itself
+be a polynomial or a rational function.
+```
+julia> p = 3x^2 + 5x +1
+1 + 5*x + 3*x^2
+
+julia> q = 2x-3
+-3 + 2*x
+
+julia> p(q)
+13 - 26*x + 12*x^2
+
+julia> 3q^2 + 5q + 1
+13 - 26*x + 12*x^2
+```
+
+Beware that multiplication requires the `*` symbol. Observe:
+```
+julia> (x^2-2)*(x-3)
+6 - 2*x - 3*x^2 + x^3
+
+julia> (x^2-2)(x-3)
+7 - 6*x + x^2
+```
+In the second case, we are evaluating the function `(x^2-2)`
+with the argument `(x-3)`:
+```
+julia> (x-3)^2 - 2
+7 - 6*x + x^2
+```
+
 
 ## GCD and LCM
 
@@ -161,18 +332,35 @@ Given  `SimplePolynomial`s `a` and `b`, `gcd(a,b)` returns a greatest
 common divisor of `a` and `b`. This is a polynomial of highest degree
 that divides both `a` and `b` without remainder. Note that this is
 not unique as a nonzero multiple of a GCD is also a GCD of the two
-polynomials.
+polynomials. The polynomial returned is always monic.
+
+```
+julia> p = (2x-1) * (x+5)
+-5 + 9*x + 2*x^2
+
+julia> q = (2x-1) * (x^2-4)
+4 - 8*x - x^2 + 2*x^3
+
+julia> gcd(p,q)
+-1//2 + x
+```
+
+
 
 Similarly, `lcm(a,b)` returns a least common multiple of `a` and `b`.
-As with `gcd`, this is not uniquely defined.
+As with `gcd`, this is not uniquely defined; we return a monic
+least common multiple.
+```
+julia> lcm(p,q)
+10//1 - 18//1*x - 13//2*x^2 + 9//2*x^3 + x^4
+```
 
-To be sure that the result of these operations are consistent, the
-results are wrapped in `monic` to ensure that the results
-have leading coefficient equal to one.
+
+
 
 ## Roots
 
-Use `roots(p)` to get a list of values `x` for which `p(x)==0`.
+For polynomials, `roots(p)` returns a list of values `x` for which `p(x)==0`.
 These are floating point and so are likely not to be exact.
 ```
 julia> p = x^2-x-1
@@ -191,22 +379,55 @@ julia> p.(ans)
 
 ## Calculus
 
-* `derivative(p)` returns the derivative of `p`. So does `p'`.
-* `integrate(p)` returns the integral of `p` with constant term zero.
-
+`derivative()` returns the derivative of a `SiplePolynomial`
+or `SimpleRationalFunction`. We may also use `p'` for
+`derivative(p)`.
 ```
-julia> p = 1 + 3x - 5x^2
-1 + 3*x - 5*x^2
+julia> p = x^5 - 3x + 2
+2 - 3*x + x^5
 
 julia> derivative(p)
-3 - 10*x
+-3 + 5*x^4
 
-julia> integrate(ans)
-3*x - 5*x^2
+julia> p'
+-3 + 5*x^4
+
+julia> f = (x^2-5)/(x+3)
+(-5 + x^2) / (3 + x)
+
+julia> f'
+(5 + 6*x + x^2) / (9 + 6*x + x^2)
 ```
 
 
-## Conversion to/from `Polynomial`
+
+
+
+`integral(p)` returns the integral of `p` with constant term zero.
+
+```julia>
+p = 1 + 3x - 5x^2
+1 + 3*x - 5*x^2
+
+julia> integral(p)
+x + 3//2*x^2 - 5//3*x^3
+
+julia> derivative(ans)
+1 + 3*x - 5*x^2
+```
+
+The integral of a rational funtion is not necessarily a rational
+function; it is not implemented in this module.
+```
+julia> f = 1/(1+x^2)
+1 / (1 + x^2)
+
+julia> integral(f)
+ERROR: MethodError: no method matching integral(::SimpleRationalFunction)
+```
+
+
+## Conversion between `SimplePolynomial` and  `Polynomial`
 
 The `Polynomials` module also defines polynomials with many additional
 properties. However, those polynomials allow floating point coefficients.

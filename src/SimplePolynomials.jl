@@ -4,10 +4,10 @@ using Mods
 import Base: getindex, (==), show, zero, one, eltype, adjoint
 import Base: numerator, denominator, big, inv
 
-import Polynomials: degree, Polynomial, coeffs, roots, derivative, integrate
+import Polynomials: degree, Polynomial, coeffs, roots, derivative
 
 export SimplePolynomial, degree, coeffs, getx, Polynomial, roots
-export derivative, integrate, lead
+export derivative, integral, lead
 
 # IntegerX is any sort of real or Gaussian integer
 IntegerX = Union{S,Complex{S},Mod} where S<:Integer
@@ -167,10 +167,10 @@ adjoint(P::SimplePolynomial) = derivative(P)
 
 
 """
-`integrate(P::SimplePolynomial)` returns the integral of `P`
+`integral(P::SimplePolynomial)` returns the integral of `P`
 with constant term equal to zero.
 """
-function integrate(P::SimplePolynomial)
+function integral(P::SimplePolynomial)
     if P==0
         return P
     end
