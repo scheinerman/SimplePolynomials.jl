@@ -1,4 +1,4 @@
-using Primes, Mods
+using Primes, Mods, SimplePolynomials
 
 """
 `divisors(n)` returns a `Set` of all the positive divisors of the integer `n`.
@@ -21,7 +21,7 @@ end
 
 
 function rational_roots(p::SimplePolynomial)
-    @assert degree(p)>0 "Polynomial must be degree 1 or higher"
+    @assert degree(p)>=0 "Polynomial must not be identically zero"
     T = eltype(p)
     if T<:Complex || T<:Mod
         error("Coefficients are not (real) rational numbers; they are $T")
@@ -30,6 +30,16 @@ function rational_roots(p::SimplePolynomial)
         dlist = denominator.(coeffs(p))
         p *= lcm(dlist)
         p = integerize(p)
+    end
+    p = big(p)
+    R1 = Set{Rational{BigInt}}()
+
+    if p[0] == 0
+        push!(R1,0)
+        clist = coeffs(p)
+        j = findfirst(clist .!= 0)
+        clist = clist[j:end]
+        p = SimplePolynomial(clist)
     end
 
     a = lead(p)   # leading coefficient
@@ -40,6 +50,8 @@ function rational_roots(p::SimplePolynomial)
     B2 = Set(-t for t in B1)
     B = union(B1,B2)
 
-    Set(y//x for y in B for x in A if p(y//x)==0)
+
+    R2 = Set(y//x for y in B for x in A if p(y//x)==0)
+    return union(R1,R2)
 
 end
