@@ -21,7 +21,12 @@ CoefX = Union{IntegerX,RationalX}
 
 struct SimplePolynomial
     data::Vector
-    SimplePolynomial(list::Vector{T}) where T<:CoefX = new(_chomp(list))
+    func::Function
+    function SimplePolynomial(list::Vector{T}) where T<:CoefX
+        list = _chomp(list)
+        f = x -> @evalpoly(x,list...)
+        new(_chomp(list),f)
+    end
 end
 
 function SimplePolynomial(c...)
@@ -122,6 +127,10 @@ end
 
 # This implements evaluation
 function (p::SimplePolynomial)(x)
+    try
+        return p.func(x)
+    catch
+    end 
     result = 0
     n = degree(p)
     for j=n:-1:0
