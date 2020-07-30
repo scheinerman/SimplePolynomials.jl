@@ -7,7 +7,7 @@ import Base: numerator, denominator, big, inv
 import Polynomials: degree, Polynomial, coeffs, roots, derivative
 
 export SimplePolynomial, degree, coeffs, getx, Polynomial, roots
-export derivative, integral, lead
+export derivative, integral, lead, make_function
 
 # IntegerX is any sort of real or Gaussian integer
 IntegerX = Union{S,Complex{S},Mod} where S<:Integer
@@ -36,9 +36,21 @@ function SimplePolynomial(c...)
     for j=1:n
         data[j] = c[j]
     end
-
     SimplePolynomial(data)
 end
+
+
+"""
+`make_function(p::SimplePolynomial)` or
+`make_function(f::SimpleRationalFunction)`
+returns a Julia `Function` that evaluates `p` or `f`.
+Of course one can use `p(x)` or `f(x)`, but the function returned
+can then be passed to (for example) `plot`.
+
+Please note that `p(x)` [or `f(x)`] is already quite efficient.
+"""
+make_function(p::SimplePolynomial) = p.func
+
 
 
 SimplePolynomial() = SimplePolynomial([0])
@@ -130,7 +142,7 @@ function (p::SimplePolynomial)(x)
     try
         return p.func(x)
     catch
-    end 
+    end
     result = 0
     n = degree(p)
     for j=n:-1:0

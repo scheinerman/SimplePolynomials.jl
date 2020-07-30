@@ -325,6 +325,28 @@ julia> (x-3)^2 - 2
 7 - 6*x + x^2
 ```
 
+### Conversion to a function
+
+Given `p`, the syntax `p(x)` evaluates `p` at `x`. Of course, `p`
+is of type `SimplePolynomial` (or `SimpleRationalFunction`). If you
+want a `Function` that evaluates `p`, use `make_function(p)`.
+```
+julia> x = getx();
+
+julia> p = 5 + 2x + 4x^2
+5 + 2*x + 4*x^2
+
+julia> p(10)
+425
+
+julia> P = make_function(p)
+#1 (generic function with 1 method)
+
+julia> P(10)
+425
+```
+
+
 
 ## GCD and LCM
 

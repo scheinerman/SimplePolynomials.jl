@@ -31,6 +31,14 @@ SimpleRationalFunction(f::SimplePolynomial,a::T) where T<:CoefX = SimpleRational
 SimpleRationalFunction(a::T, b::S) where {T<:CoefX,S<:CoefX} = SimpleRationalFunction(a//b)
 SimpleRationalFunction() = SimpleRationalFunction(0)
 
+
+function make_function(f::SimpleRationalFunction)
+    F(x) = (f.num.func(x))/(f.den.func(x))
+end 
+
+
+
+
 numerator(f::SimpleRationalFunction) = f.num
 denominator(f::SimpleRationalFunction) = f.den
 

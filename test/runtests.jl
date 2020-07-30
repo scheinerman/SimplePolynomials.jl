@@ -121,6 +121,17 @@ end
     @test f(0) == Mod{13}(1 // 2)
 end
 
+@testset "Functionize" begin
+    x = getx()
+    p = 3 + 5x + 8x^2
+    P = make_function(p)
+    @test p(10) == P(10)
+
+    f = p / (1-x)
+    F = make_function(f)
+    @test F(10) == f(10)
+end
+
 
 
 nothing
