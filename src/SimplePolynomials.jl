@@ -16,14 +16,19 @@ IntegerX = Union{S,Complex{S},Mod} where S<:Integer
 RationalX = Union{Rational{S},Complex{Rational{S}}} where S<:Integer
 
 # CoefX is the type we allow for coefficients ... all exact
-
 CoefX = Union{IntegerX,RationalX}
+
+
+_enlarge(x::Integer) = big(x)
+_enlarge(x::Rational) = big(x)
+_enlarge(x::Complex) = big(x)
+_enlarge(x::Mod) = x 
 
 struct SimplePolynomial
     data::Vector
     func::Function
     function SimplePolynomial(list::Vector{T}) where T<:CoefX
-        list = _chomp(list)
+        list = _enlarge.(_chomp(list))
         f = x -> @evalpoly(x,list...)
         new(_chomp(list),f)
     end
@@ -76,7 +81,7 @@ lead(p::SimplePolynomial) = p.data[end]
 
 # conversion to/from Polynomial type
 SimplePolynomial(P::Polynomial) = SimplePolynomial(P.coeffs)
-Polynomial(p::SimplePolynomial) = Polynomial(p.data)
+Polynomial(p::SimplePolynomial) = Polynomial(small.(p.data))
 
 
 """
@@ -202,10 +207,10 @@ end
 
 
 include("SimpleRationalFunctions.jl")
-include("small.jl")
 include("show.jl")
 include("arithmetic.jl")
 include("rat_arith.jl")
 include("gcd.jl")
+include("small.jl")
 
 end

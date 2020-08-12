@@ -2,16 +2,16 @@ import Base: gcd, lcm
 
 
 function gcd(a::SimplePolynomial, b::SimplePolynomial)
-    try
+    #try
         d = integerize(_gcd(a,b))
         return d
-    catch
-        aa = big(a)
-        bb = big(b)
-        dd = _gcd(aa,bb)
-        d = integerize(small(dd))
-        return d
-    end
+    # catch
+    #     aa = big(a)
+    #     bb = big(b)
+    #     dd = _gcd(aa,bb)
+    #     d = integerize(dd)
+    #     return d
+    # end
 end
 
 function _gcd(a::SimplePolynomial, b::SimplePolynomial)

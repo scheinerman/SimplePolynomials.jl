@@ -55,7 +55,7 @@ zero(::SimpleRationalFunction) = SimpleRationalFunction(0,1)
 one(::Type{SimpleRationalFunction}) = SimpleRationalFunction(1,1)
 one(::SimpleRationalFunction) = SimpleRationalFunction(1,1)
 
-big(f::SimpleRationalFunction) = SimpleRationalFunction(big(f.num),big(f.den))
+# big(f::SimpleRationalFunction) = SimpleRationalFunction(big(f.num),big(f.den))
 
 
 

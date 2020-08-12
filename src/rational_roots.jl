@@ -31,7 +31,7 @@ function rational_roots(p::SimplePolynomial)
         p *= lcm(dlist)
         p = integerize(p)
     end
-    p = big(p)
+    # p = big(p)
     R1 = Set{Rational{BigInt}}()
 
     if p[0] == 0

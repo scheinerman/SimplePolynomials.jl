@@ -19,6 +19,13 @@ expense of computational efficiency.
 * `SimpleRationalFunction`: These are fractions whose numerator and
 denominator are `SimplePolynomial`s.
 
+## Caveat
+
+The polynomials (and rational functions) in this module all have exact and
+arbitrary size precision. That means there will not be rounding or overflow issues, but
+the cost is performance. The `Polynomials` package is more efficient. 
+Other computer algebra packages may perform better. 
+
 
 # Basics
 
@@ -397,6 +404,28 @@ julia> p.(ans)
 2-element Array{Float64,1}:
  -1.1102230246251565e-16
   2.220446049250313e-16
+```
+
+### Rational roots
+
+As an extra, please find the file `rational_roots.jl` in the `src` directory
+which provides a `rational_roots` function.
+```
+julia> include("src/rational_roots.jl")
+rational_roots (generic function with 1 method)
+
+julia> p
+15 - 13*x + 17*x^2 - 13*x^3 + 2*x^4
+
+julia> roots(p)
+4-element Array{Complex{Float64},1}:
+ -3.885780586188048e-16 - 1.0000000000000009im
+ -3.885780586188048e-16 + 1.0000000000000009im
+     1.4999999999999993 + 0.0im
+      5.000000000000005 + 0.0im
+
+julia> rational_roots(p)
+{3//2,5//1}
 ```
 
 ## Calculus
