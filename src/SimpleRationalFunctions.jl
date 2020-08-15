@@ -42,6 +42,9 @@ end
 numerator(f::SimpleRationalFunction) = f.num
 denominator(f::SimpleRationalFunction) = f.den
 
+numerator(f::SimplePolynomial) = f 
+denominator(f::SimplePolynomial) = one(eltype(f))
+
 (==)(f::SimpleRationalFunction,g::SimpleRationalFunction) = (f.num==g.num) && (f.den==g.den)
 (==)(f::SimpleRationalFunction,p::SimplePolynomial) = f == SimpleRationalFunction(p)
 (==)(p::SimplePolynomial,f::SimpleRationalFunction) = f==p

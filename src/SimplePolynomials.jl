@@ -158,6 +158,28 @@ function (p::SimplePolynomial)(x)
 end
 
 
+# special case when arg is a matrix
+function (p::SimplePolynomial)(x::AbstractMatrix{T}) where {T}
+    r, c = size(x)
+    if r != c
+        error("number of rows $r must equal the number of columns $c")
+    end
+    S = eltype(p)
+    ST = promote_type(S,T)
+    id = zeros(ST, r,r)
+    for i=1:r 
+        id[i,i] = 1 
+    end 
+    result = zeros(ST, r, r)
+    n = degree(p)
+    for j = n:-1:0
+        result *= x
+        result += p[j] * id
+    end
+    return result
+end
+
+
 """
 `getx()` is a convenient way to create `SimplePolynomial(0,1)`.
 Typical use:

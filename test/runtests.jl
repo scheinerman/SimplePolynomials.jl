@@ -130,6 +130,9 @@ end
     f = p / (1-x)
     F = make_function(f)
     @test F(10) == f(10)
+    A = [ 2 3 ; 0 -1]
+    p = -2 - x + x^2
+    @test all(p(A).==0)
 end
 
 

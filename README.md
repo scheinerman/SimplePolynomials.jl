@@ -301,6 +301,18 @@ julia> f(3.2 - 4.1im)
 4.575609756097562 - 9.812195121951218im
 ```
 
+The argument of a polynomial or simple rational function may be a square matrix.
+```
+julia> A = [ 2 3 ; 0 -1];
+
+julia> p = -2 - x + x^2;
+
+julia> p(A)
+2×2 Array{BigInt,2}:
+ 0  0
+ 0  0
+```
+
 The argument of a polynomial or rational function may itself
 be a polynomial or a rational function.
 ```
