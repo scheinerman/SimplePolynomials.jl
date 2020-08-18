@@ -420,12 +420,9 @@ julia> p.(ans)
 
 ### Rational roots
 
-As an extra, please find the file `rational_roots.jl` in the `src` directory
-which provides a `rational_roots` function.
+The function `rational_roots` returns the set of all rational 
+roots of a polynomial.
 ```
-julia> include("src/rational_roots.jl")
-rational_roots (generic function with 1 method)
-
 julia> p
 15 - 13*x + 17*x^2 - 13*x^3 + 2*x^4
 

@@ -135,6 +135,13 @@ end
     @test all(p(A).==0)
 end
 
+@testset "Rational Roots" begin 
+    x = getx()
+    p = (x^2+1)*(2x-1)*(3x+5)
+    R = rational_roots(p)
+    @test R == Set([1//2, -5//3])
+end
+
 
 
 nothing

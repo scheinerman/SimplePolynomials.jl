@@ -1,5 +1,5 @@
 module SimplePolynomials
-using Mods
+using Mods, Primes
 
 import Base: getindex, (==), show, zero, one, eltype, adjoint
 import Base: numerator, denominator, big, inv
@@ -234,5 +234,6 @@ include("arithmetic.jl")
 include("rat_arith.jl")
 include("gcd.jl")
 include("small.jl")
+include("rational_roots.jl")
 
 end
