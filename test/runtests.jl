@@ -1,4 +1,4 @@
-using Test, SimplePolynomials, Polynomials, Mods
+using Test, SimplePolynomials, Polynomials, Mods, Multisets
 
 a = SimplePolynomial(1, 1, 1)
 b = SimplePolynomial(1, 2, 3)
@@ -137,9 +137,9 @@ end
 
 @testset "Rational Roots" begin 
     x = getx()
-    p = (x^2+1)*(2x-1)*(3x+5)
+    p = (x^2+1)*(2x-1)^2*(3x+5)
     R = rational_roots(p)
-    @test R == Set([1//2, -5//3])
+    @test R == Multiset([1//2, -5//3, 1//2])
 end
 
 

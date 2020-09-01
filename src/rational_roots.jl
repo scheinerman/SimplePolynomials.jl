@@ -20,10 +20,10 @@ function _divisors(n::Integer)
 end
 
 """
-`rational_roots(p::SimplePolynomial)` returns a set of all rational roots 
+`rational_roots(p::SimplePolynomial)` returns a `Multiset` of all rational roots 
 of `p`.
 """
-function rational_roots(p::SimplePolynomial)
+function rational_roots(p::SimplePolynomial)::Multiset
     @assert degree(p)>=0 "Polynomial must not be identically zero"
     T = eltype(p)
     if T<:Complex || T<:Mod
@@ -35,14 +35,12 @@ function rational_roots(p::SimplePolynomial)
         p = integerize(p)
     end
     # p = big(p)
-    R1 = Set{Rational{BigInt}}()
+    R = Multiset{Rational{BigInt}}()   # this holds all the answers
 
-    if p[0] == 0
-        push!(R1,0)
+    while p[0] == 0
+        push!(R,0)
         clist = coeffs(p)
-        j = findfirst(clist .!= 0)
-        clist = clist[j:end]
-        p = SimplePolynomial(clist)
+        p = SimplePolynomial(clist[2:end])
     end
 
     a = lead(p)   # leading coefficient
@@ -51,10 +49,20 @@ function rational_roots(p::SimplePolynomial)
     A = _divisors(a)
     B1 = _divisors(b)
     B2 = Set(-t for t in B1)
-    B = union(B1,B2)
+    B = collect(union(B1,B2))   # all possible rational roots are in the list B
 
+    x = getx()
 
-    R2 = Set(y//x for y in B for x in A if p(y//x)==0)
-    return union(R1,R2)
+    for a in A 
+        for b in B 
+            r = b//a
+            while p(r) == 0
+                push!(R,r)   # add b to the output multiset 
+                p = numerator(p // (x-r))
+            end 
+        end 
+    end
+
+    return R
 
 end

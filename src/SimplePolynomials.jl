@@ -1,5 +1,5 @@
 module SimplePolynomials
-using Mods, Primes
+using Mods, Primes, Multisets
 
 import Base: getindex, (==), show, zero, one, eltype, adjoint
 import Base: numerator, denominator, big, inv

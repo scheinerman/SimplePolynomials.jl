@@ -33,7 +33,7 @@ Other computer algebra packages may perform better.
 
 A `SimplePolynomial` is a polynomial in one variable with exact
 coefficients. There are a few options to create a `SimplePolynomial`:
-```
+```julia
 julia> using SimplePolynomials
 
 julia> p = SimplePolynomial([2,-4,1])
@@ -45,7 +45,7 @@ julia> p = SimplePolynomial(2,-4,1,0)
 The `getx()` function returns `SimplePolynomial(0,1)`. Assigning that
 result to a variable named `x` makes creating polynomials rather
 natural.
-```
+```julia
 julia> x = getx()
 x
 
@@ -55,7 +55,7 @@ julia> p = 2 - 4x + x^2
 
 Polynomial coefficients may also be rational numbers, Gaussian integers,
 Gaussian rationals, or modular numbers.
-```
+```julia
 julia> p = 3x^2 - im*x + 4
 4 - im*x + 3*x^2
 
@@ -75,7 +75,7 @@ point numbers.
 
 The coefficients of a `SimplePolynomial` can be accessed with the
 `coeffs` function:
-```
+```julia
 julia> p = 1 -5x + 11x^2 + 4x^3
 1 - 5*x + 11*x^2 + 4*x^3
 
@@ -88,7 +88,7 @@ julia> coeffs(p)
 ```
 Use square brackets to retrieve a coefficient
 associated with a given power:
-```
+```julia
 julia> p[2]     # coefficient of x^2
 11
 
@@ -103,7 +103,7 @@ ERROR: index [-1] must be nonnegative
 ```
 Note that a `SimplePolynomial` is an immutable object and one
 may not change its coefficients.
-```
+```julia
 julia> p = 3x^2 - 5x +1
 1 - 5*x + 3*x^2
 
@@ -115,7 +115,7 @@ ERROR: MethodError: no method matching setindex!(::SimplePolynomial, ::Int64, ::
 
 The `degree` function returns the degree of the polynomial and
 `lead` returns the coefficient of that term.
-```
+```julia
 julia> degree(p)
 3
 
@@ -126,7 +126,7 @@ julia> lead(p)
 Nonzero constant polynomials have degree zero. The zero polynomial
 should have degree `-∞` but this is not an `Int`, so we return `-1`.
 This is also the only case in which `lead` returns `0`:
-```
+```julia
 julia> p = SimplePolynomial(0)
 0
 
@@ -139,7 +139,7 @@ julia> lead(p)
 
 The function `monic(p)` returns a `SimplePolynomial` formed
 by dividing all coefficients by the leading term:
-```
+```julia
 julia> p = 4-8x + 2x^2
 4 - 8*x + 2*x^2
 
@@ -160,7 +160,7 @@ The function `eltype` returns the Julia type of the coefficients.
 ## Rational Functions
 
 A `SimpleRationalFunction` is the ratio of two polynomials:
-```
+```julia
 julia> p = 3x + x^3
 3*x + x^3
 
@@ -173,7 +173,7 @@ julia> p/q
 A `SimpleRationalFunction` is always represented as
 the ratio of relatively prime polynomials; that is, any
 common factors between numerator and denominator are cancelled.
-```
+```julia
 julia> p = (x-1)*(x-2)*(x-3)
 -6 + 11*x - 6*x^2 + x^3
 
@@ -185,12 +185,12 @@ julia> p/q
 ```
 Furthermore, the denominator of a `SimpleRationalFunction` is always a
 *monic* polynomial; that is, the leading coefficient is one.
-```
+```julia
 julia> (x-3)/(2x^2-5)
 (-3//2 + 1//2*x) / (-5//2 + x^2)
 ```
 Of course, division by zero is forbidden:
-```
+```julia
 julia> p = x^2-5;
 
 julia> q = SimplePolynomial(0);
@@ -203,7 +203,7 @@ ERROR: Denominator cannot be zero
 
 Use `numerator` and `denominator` to extract the relevant
 parts of a `SimpleRationalFunction`:
-```
+```julia
 julia> f = (x^2 - 3x + 2) / (x-4)
 (2 - 3*x + x^2) / (-4 + x)
 
@@ -218,7 +218,7 @@ julia> denominator(f)
 
 The `string3` function can be used to give a nice visualization
 of a `SimpleRationalFunction`:
-```
+```julia
 julia> f = (x^2 - 3x + 2) / (x-4)
 (2 - 3*x + x^2) / (-4 + x)
 
@@ -244,7 +244,7 @@ polynomials, or rational functions.
 Exponentiation by an integer power may be performed for any
 `SimplePolynomial` or `SimpleRationalFunction`.
 
-```
+```julia
 julia> p = 1+x
 1 + x
 
@@ -262,7 +262,7 @@ julia> for k=-3:3
 
 For polynomials, division results in a `SimpleRationalFunction`.
 Alternatively, use `diverm` to find the quotient and remainder:
-```
+```julia
 julia> a = 3x^3 + 5x -1
 -1 + 5*x + 3*x^3
 
@@ -281,7 +281,7 @@ true
 
 Polynomials and rational functions behave as functions; they can be
 evaluated as follows:
-```
+```julia
 julia> p = 3x^2 + 5x +1
 1 + 5*x + 3*x^2
 
@@ -302,7 +302,7 @@ julia> f(3.2 - 4.1im)
 ```
 
 The argument of a polynomial or simple rational function may be a square matrix.
-```
+```julia
 julia> A = [ 2 3 ; 0 -1];
 
 julia> p = -2 - x + x^2;
@@ -315,7 +315,7 @@ julia> p(A)
 
 The argument of a polynomial or rational function may itself
 be a polynomial or a rational function.
-```
+```julia
 julia> p = 3x^2 + 5x +1
 1 + 5*x + 3*x^2
 
@@ -330,7 +330,7 @@ julia> 3q^2 + 5q + 1
 ```
 
 Beware that multiplication requires the `*` symbol. Observe:
-```
+```julia
 julia> (x^2-2)*(x-3)
 6 - 2*x - 3*x^2 + x^3
 
@@ -339,7 +339,7 @@ julia> (x^2-2)(x-3)
 ```
 In the second case, we are evaluating the function `(x^2-2)`
 with the argument `(x-3)`:
-```
+```julia
 julia> (x-3)^2 - 2
 7 - 6*x + x^2
 ```
@@ -349,7 +349,7 @@ julia> (x-3)^2 - 2
 Given `p`, the syntax `p(x)` evaluates `p` at `x`. Of course, `p`
 is of type `SimplePolynomial` (or `SimpleRationalFunction`). If you
 want a `Function` that evaluates `p`, use `make_function(p)`.
-```
+```julia
 julia> x = getx();
 
 julia> p = 5 + 2x + 4x^2
@@ -375,7 +375,7 @@ that divides both `a` and `b` without remainder. Note that this is
 not unique as a nonzero multiple of a GCD is also a GCD of the two
 polynomials. The polynomial returned is always monic.
 
-```
+```julia
 julia> p = (2x-1) * (x+5)
 -5 + 9*x + 2*x^2
 
@@ -391,7 +391,7 @@ julia> gcd(p,q)
 Similarly, `lcm(a,b)` returns a least common multiple of `a` and `b`.
 As with `gcd`, this is not uniquely defined; we return a monic
 least common multiple.
-```
+```julia
 julia> lcm(p,q)
 10//1 - 18//1*x - 13//2*x^2 + 9//2*x^3 + x^4
 ```
@@ -403,7 +403,7 @@ julia> lcm(p,q)
 
 For polynomials, `roots(p)` returns a list of values `x` for which `p(x)==0`.
 These are floating point and so are likely not to be exact.
-```
+```julia
 julia> p = x^2-x-1
 -1 - x + x^2
 
@@ -420,21 +420,24 @@ julia> p.(ans)
 
 ### Rational roots
 
-The function `rational_roots` returns the set of all rational 
+The function `rational_roots` returns the `Multiset` of all rational 
 roots of a polynomial.
-```
-julia> p
-15 - 13*x + 17*x^2 - 13*x^3 + 2*x^4
-
-julia> roots(p)
-4-element Array{Complex{Float64},1}:
- -3.885780586188048e-16 - 1.0000000000000009im
- -3.885780586188048e-16 + 1.0000000000000009im
-     1.4999999999999993 + 0.0im
-      5.000000000000005 + 0.0im
+```julia
+julia> p = (2x-3)^2 * (4x+3) * x^2 * (x^2+1)
+27*x^2 - 9*x^4 + 16*x^5 - 36*x^6 + 16*x^7
 
 julia> rational_roots(p)
-{3//2,5//1}
+{-3//4,0//1,0//1,3//2,3//2}
+
+julia> roots(p)
+7-element Array{Complex{Float64},1}:
+   -0.7499999999999999 + 0.0im
+ 3.885780586188048e-16 - 1.0000000000000009im
+ 3.885780586188048e-16 + 1.0000000000000009im
+    1.4999999920796347 + 0.0im
+    1.5000000079203661 + 0.0im
+                   0.0 + 0.0im
+                   0.0 + 0.0im
 ```
 
 ## Calculus
@@ -442,7 +445,7 @@ julia> rational_roots(p)
 `derivative()` returns the derivative of a `SimplePolynomial`
 or `SimpleRationalFunction`. We may also use `p'` for
 `derivative(p)`.
-```
+```julia
 julia> p = x^5 - 3x + 2
 2 - 3*x + x^5
 
@@ -465,8 +468,8 @@ julia> f'
 
 `integral(p)` returns the integral of `p` with constant term zero.
 
-```julia>
-p = 1 + 3x - 5x^2
+```julia
+julia> p = 1 + 3x - 5x^2
 1 + 3*x - 5*x^2
 
 julia> integral(p)
@@ -478,7 +481,7 @@ julia> derivative(ans)
 
 The integral of a rational funtion is not necessarily a rational
 function; it is not implemented in this module.
-```
+```julia
 julia> f = 1/(1+x^2)
 1 / (1 + x^2)
 
