@@ -26,7 +26,7 @@ of `p`.
 function rational_roots(p::SimplePolynomial)::Multiset
     @assert degree(p)>=0 "Polynomial must not be identically zero"
     T = eltype(p)
-    if T<:Complex || T<:Mod
+    if T<:Complex || T<:AbstractMod
         error("Coefficients are not (real) rational numbers; they are $T")
     end
     if T <: Rational

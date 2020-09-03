@@ -126,7 +126,7 @@ function divrem(a::SimplePolynomial, b::SimplePolynomial)
 
     #ST = typeof((a[0]+b[0])//1)
     ST = Int
-    if eltype(a) <: Mod || eltype(b) <: Mod
+    if eltype(a) <: AbstractMod || eltype(b) <: AbstractMod
         ST = eltype(a)
     else
         ST = typeof((lead(a)+lead(b))//1)

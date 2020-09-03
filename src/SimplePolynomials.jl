@@ -10,7 +10,7 @@ export SimplePolynomial, degree, coeffs, getx, Polynomial, roots
 export derivative, integral, lead, make_function
 
 # IntegerX is any sort of real or Gaussian integer
-IntegerX = Union{S,Complex{S},Mod} where S<:Integer
+IntegerX = Union{S,Complex{S},AbstractMod} where S<:Integer
 
 # RationalX is a Rational or Complex Rational based on integers
 RationalX = Union{Rational{S},Complex{Rational{S}}} where S<:Integer
@@ -22,7 +22,7 @@ CoefX = Union{IntegerX,RationalX}
 _enlarge(x::Integer) = big(x)
 _enlarge(x::Rational) = big(x)
 _enlarge(x::Complex) = big(x)
-_enlarge(x::Mod) = x 
+_enlarge(x::AbstractMod) = x 
 
 struct SimplePolynomial
     data::Vector

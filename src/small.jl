@@ -37,6 +37,6 @@ function small(x::Complex{Rational{T}}) where T<:Integer
     return x
 end
 
-small(x::Mod) = x
+small(x::AbstractMod) = x
 
 

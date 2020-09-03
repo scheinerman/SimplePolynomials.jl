@@ -35,7 +35,7 @@ function _top(x::T) where T<:Complex
     return numerator(real(x)) + numerator(imag(x))*im
 end
 
-_top(x::Mod) = x
+_top(x::AbstractMod) = x
 
 """
 `integerize(p::SimplePolynomial)` is useful when `p`
