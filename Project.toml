@@ -12,8 +12,8 @@ Multisets = "3b2b4ff1-bcff-5658-a3ee-dbcf1ce5ac09"
 julia = "1.4"
 Polynomials = "1"
 Mods = "1"
-Primes = "0"
-Multisets = "0"
+Primes = "0.4, 0.5"
+Multisets = "0.2, 0.3"
 
 [extras]
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
