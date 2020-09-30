@@ -1,7 +1,7 @@
 # SimplePolynomials
 
 
-[![Build Status](https://travis-ci.org/scheinerman/SimplePolynomials.jl.svg?branch=master)](https://travis-ci.org/scheinerman/SimplePolynomials.jl)
+[![Build Status](https://travis-ci.com/scheinerman/SimplePolynomials.jl.svg?branch=master)](https://travis-ci.com/scheinerman/SimplePolynomials.jl)
 
 [![Coverage Status](https://coveralls.io/repos/scheinerman/SimplePolynomials.jl/badge.svg?branch=master&service=github)](https://coveralls.io/github/scheinerman/SimplePolynomials.jl?branch=master)
 
