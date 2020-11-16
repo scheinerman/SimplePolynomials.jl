@@ -23,7 +23,10 @@ end
     @test f(1) * p(1) == 1
 end
 
-
+@testset "String" begin
+    p = getx()+1 
+    @test string(p) == "1 + x"
+end
 
 
 @testset "Polynomial Arithmetic" begin
