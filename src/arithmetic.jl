@@ -68,7 +68,7 @@ end
 
 function (^)(p::SimplePolynomial, k::S) where {S<:Integer}
 
-    if k<0
+    if k < 0
         f = inv(p)
         return f^(-k)
     end
@@ -129,7 +129,7 @@ function divrem(a::SimplePolynomial, b::SimplePolynomial)
     if eltype(a) <: AbstractMod || eltype(b) <: AbstractMod
         ST = eltype(a)
     else
-        ST = typeof((lead(a)+lead(b))//1)
+        ST = typeof((lead(a) + lead(b)) // 1)
     end
 
 

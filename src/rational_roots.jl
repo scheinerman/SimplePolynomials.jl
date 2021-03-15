@@ -1,4 +1,4 @@
-export rational_roots 
+export rational_roots
 
 """
 `_divisors(n)` returns a `Set` of all the positive divisors of the integer `n`.
@@ -24,9 +24,9 @@ end
 of `p`.
 """
 function rational_roots(p::SimplePolynomial)::Multiset
-    @assert degree(p)>=0 "Polynomial must not be identically zero"
+    @assert degree(p) >= 0 "Polynomial must not be identically zero"
     T = eltype(p)
-    if T<:Complex || T<:AbstractMod
+    if T <: Complex || T <: AbstractMod
         error("Coefficients are not (real) rational numbers; they are $T")
     end
     if T <: Rational
@@ -38,7 +38,7 @@ function rational_roots(p::SimplePolynomial)::Multiset
     R = Multiset{Rational{BigInt}}()   # this holds all the answers
 
     while p[0] == 0
-        push!(R,0)
+        push!(R, 0)
         clist = coeffs(p)
         p = SimplePolynomial(clist[2:end])
     end
@@ -49,18 +49,18 @@ function rational_roots(p::SimplePolynomial)::Multiset
     A = _divisors(a)
     B1 = _divisors(b)
     B2 = Set(-t for t in B1)
-    B = collect(union(B1,B2))   # all possible rational roots are in the list B
+    B = collect(union(B1, B2))   # all possible rational roots are in the list B
 
     x = getx()
 
-    for a in A 
-        for b in B 
-            r = b//a
+    for a in A
+        for b in B
+            r = b // a
             while p(r) == 0
-                push!(R,r)   # add b to the output multiset 
-                p = numerator(p // (x-r))
-            end 
-        end 
+                push!(R, r)   # add b to the output multiset 
+                p = numerator(p // (x - r))
+            end
+        end
     end
 
     return R

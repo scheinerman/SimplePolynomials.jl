@@ -41,7 +41,7 @@ inv(f::SimpleRationalFunction) = SimpleRationalFunction(f.den, f.num)
 
 function inv(p::SimplePolynomial)
     T = eltype(p)
-    SimpleRationalFunction(T(1),p)
+    SimpleRationalFunction(T(1), p)
 end
 
 
@@ -60,12 +60,12 @@ SimpleThing = Union{SimplePolynomial,SimpleRationalFunction}
 
 
 # exponentiation
-function (^)(p::SimpleRationalFunction, k::S) where S<:Integer
+function (^)(p::SimpleRationalFunction, k::S) where {S<:Integer}
     if k == 0
         return SimpleRationalFunction(1)
     end
 
-    if k<0
+    if k < 0
         return (inv(p))^(-k)
     end
 
@@ -95,6 +95,6 @@ import Base: adjoint
 function derivative(f::SimpleRationalFunction)
     p = numerator(f)
     q = denominator(f)
-    return (p'*q - q'*p)/(q*q)
+    return (p' * q - q' * p) / (q * q)
 end
 adjoint(f::SimpleRationalFunction) = derivative(f)

@@ -10,10 +10,10 @@ export SimplePolynomial, degree, coeffs, getx, Polynomial, roots
 export derivative, integral, lead, make_function
 
 # IntegerX is any sort of real or Gaussian integer
-IntegerX = Union{S,Complex{S},AbstractMod} where S<:Integer
+IntegerX = Union{S,Complex{S},AbstractMod} where {S<:Integer}
 
 # RationalX is a Rational or Complex Rational based on integers
-RationalX = Union{Rational{S},Complex{Rational{S}}} where S<:Integer
+RationalX = Union{Rational{S},Complex{Rational{S}}} where {S<:Integer}
 
 # CoefX is the type we allow for coefficients ... all exact
 CoefX = Union{IntegerX,RationalX}
@@ -22,23 +22,23 @@ CoefX = Union{IntegerX,RationalX}
 _enlarge(x::Integer) = big(x)
 _enlarge(x::Rational) = big(x)
 _enlarge(x::Complex) = big(x)
-_enlarge(x::AbstractMod) = x 
+_enlarge(x::AbstractMod) = x
 
 struct SimplePolynomial
     data::Vector
     func::Function
-    function SimplePolynomial(list::Vector{T}) where T<:CoefX
+    function SimplePolynomial(list::Vector{T}) where {T<:CoefX}
         list = _enlarge.(_chomp(list))
-        f = x -> @evalpoly(x,list...)
-        new(_chomp(list),f)
+        f = x -> @evalpoly(x, list...)
+        new(_chomp(list), f)
     end
 end
 
 function SimplePolynomial(c...)
     n = length(c)
     T = typeof(sum(c))
-    data = zeros(T,n)
-    for j=1:n
+    data = zeros(T, n)
+    for j = 1:n
         data[j] = c[j]
     end
     SimplePolynomial(data)
@@ -63,9 +63,9 @@ SimplePolynomial(p::SimplePolynomial) = SimplePolynomial(p.data)
 
 # equality checking
 
-(==)(p::SimplePolynomial,q::SimplePolynomial) = p.data == q.data
-(==)(p::SimplePolynomial,a::T) where T = p == SimplePolynomial(a)
-(==)(a::T,p::SimplePolynomial) where T = p == SimplePolynomial(a)
+(==)(p::SimplePolynomial, q::SimplePolynomial) = p.data == q.data
+(==)(p::SimplePolynomial, a::T) where {T} = p == SimplePolynomial(a)
+(==)(a::T, p::SimplePolynomial) where {T} = p == SimplePolynomial(a)
 
 
 coeffs(p::SimplePolynomial) = copy(p.data)
@@ -88,7 +88,7 @@ Polynomial(p::SimplePolynomial) = Polynomial(small.(p.data))
 `_chomp(list)` creates a new list by removing all trailing zeros
 unless that would remove everything, in which case we leave a single zero.
 """
-function _chomp(list::Vector{T})::Vector{T} where T<:Number
+function _chomp(list::Vector{T})::Vector{T} where {T<:Number}
     if length(list) == 0 || all(list .== 0)
         return T[0]
     end
@@ -101,13 +101,13 @@ end
 `_chomp!(list)` modifies list by removing all trailing zeros, unless
 the list is entirely zeros in which case we leave a single 0.
 """
-function _chomp!(list::Vector{T}) where T<:Number
-    while length(list)>1
+function _chomp!(list::Vector{T}) where {T<:Number}
+    while length(list) > 1
         n = length(list)
         if list[n] != 0
             return
         end
-        deleteat!(list,n)
+        deleteat!(list, n)
     end
 end
 
@@ -118,8 +118,8 @@ is the zero polynomial, then `-1` is returned.
 """
 function degree(p::SimplePolynomial)
     n = length(p.data)
-    if n>1 || p.data[1]!=0
-        return n-1
+    if n > 1 || p.data[1] != 0
+        return n - 1
     end
     return -1
 end
@@ -131,11 +131,11 @@ larger than the degree of the polynomial, `0` is returned.
 """
 function getindex(p::SimplePolynomial, k::Int)
     n = length(p.data)
-    if k<0
+    if k < 0
         error("index [$k] must be nonnegative")
     end
 
-    if k>=n
+    if k >= n
         return 0
     end
 
@@ -150,7 +150,7 @@ function (p::SimplePolynomial)(x)
     end
     result = 0
     n = degree(p)
-    for j=n:-1:0
+    for j = n:-1:0
         result *= x
         result += p[j]
     end
@@ -165,11 +165,11 @@ function (p::SimplePolynomial)(x::AbstractMatrix{T}) where {T}
         error("number of rows $r must equal the number of columns $c")
     end
     S = eltype(p)
-    ST = promote_type(S,T)
-    id = zeros(ST, r,r)
-    for i=1:r 
-        id[i,i] = 1 
-    end 
+    ST = promote_type(S, T)
+    id = zeros(ST, r, r)
+    for i = 1:r
+        id[i, i] = 1
+    end
     result = zeros(ST, r, r)
     n = degree(p)
     for j = n:-1:0
@@ -189,8 +189,8 @@ p = 2 + x - 3*x^2
 ```
 Use `getx(T)` for coefficients of type `T`, e.g., `getx(Mod{13})`.
 """
-function getx(T=Int)
-    return SimplePolynomial(T(0),T(1))
+function getx(T = Int)
+    return SimplePolynomial(T(0), T(1))
 end
 
 
@@ -205,10 +205,10 @@ roots(p::SimplePolynomial) = roots(Polynomial(p))
 May also be found as `P'`.
 """
 function derivative(P::SimplePolynomial)
-    if degree(P)<1
+    if degree(P) < 1
         return SimplePolynomial(0)
     end
-    data = [k*P[k] for k=1:degree(P)]
+    data = [k * P[k] for k = 1:degree(P)]
     return SimplePolynomial(data)
 end
 adjoint(P::SimplePolynomial) = derivative(P)
@@ -219,11 +219,11 @@ adjoint(P::SimplePolynomial) = derivative(P)
 with constant term equal to zero.
 """
 function integral(P::SimplePolynomial)
-    if P==0
+    if P == 0
         return P
     end
-    data = [P[k-1]//k for k=1:degree(P)+1]
-    prepend!(data,0)
+    data = [P[k-1] // k for k = 1:degree(P)+1]
+    prepend!(data, 0)
     return SimplePolynomial(data)
 end
 
@@ -235,5 +235,6 @@ include("rat_arith.jl")
 include("gcd.jl")
 include("small.jl")
 include("rational_roots.jl")
+include("newton.jl")
 
 end

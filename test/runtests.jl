@@ -145,6 +145,19 @@ end
     @test R == Multiset([1//2, -5//3, 1//2])
 end
 
+@testset "Numerical Roots" begin
+    x = getx()
+    p = (x^2+1)*(2x-1)^2*(3x+5)*(x^2+2)
+    R = roots(p)
+    Z = p.(R)
+    @test sum(abs(z) for z in Z) < 10^-10
+
+    R = newton_roots(p)
+    Z = p.(R)
+    @test sum(abs(z) for z in Z) < 10^-50
+
+
+end 
 
 
 nothing

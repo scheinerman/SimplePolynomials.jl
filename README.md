@@ -413,6 +413,23 @@ julia> p.(ans)
   2.220446049250313e-16
 ```
 
+We can achieve greater accuracy using `newton_roots`:
+```julia
+julia> newton_roots(p)
+2-element Array{BigFloat,1}:
+ -0.6180339887498948482045868343656381177203091798057628621354486227052604628189011
+  1.61803398874989484820458683436563811772030917980576286213544862270526046281891
+
+julia> p.(ans)
+2-element Array{BigFloat,1}:
+ -8.636168555094444625386351862800399571116000364436281385023703470168591803162427e-78
+  1.727233711018888925077270372560079914223200072887256277004740694033718360632485e-77
+```
+
+The function `newton_roots` calls `newton_solve` for each root returned by `roots`. See the
+help messages. 
+
+
 ### Rational roots
 
 The function `rational_roots` returns the `Multiset` of all rational 

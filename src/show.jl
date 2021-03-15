@@ -7,7 +7,7 @@ export integerize
 # The all_ones_denom function checks if all the coefficients
 # are (Gaussian) integers, but perhaps of Rational type.
 
-function all_ones_denom(list::Vector{T})::Bool where T <: IntegerX
+function all_ones_denom(list::Vector{T})::Bool where {T<:IntegerX}
     return true
 end
 #
@@ -15,11 +15,11 @@ end
 #     return true
 # end
 
-function all_ones_denom(list::Vector{T})::Bool where T<:Real
+function all_ones_denom(list::Vector{T})::Bool where {T<:Real}
     return all(denominator.(list) .== 1)
 end
 
-function all_ones_denom(list::Vector{T})::Bool where T<:Complex
+function all_ones_denom(list::Vector{T})::Bool where {T<:Complex}
     return all_ones_denom(real.(list)) && all_ones_denom(imag.(list))
 end
 
@@ -27,12 +27,12 @@ function all_ones_denom(p::SimplePolynomial)::Bool
     return all_ones_denom(p.data)
 end
 
-function _top(x::T) where T<:Union{Rational,Integer}
+function _top(x::T) where {T<:Union{Rational,Integer}}
     return numerator(x)
 end
 
-function _top(x::T) where T<:Complex
-    return numerator(real(x)) + numerator(imag(x))*im
+function _top(x::T) where {T<:Complex}
+    return numerator(real(x)) + numerator(imag(x)) * im
 end
 
 _top(x::AbstractMod) = x
@@ -62,7 +62,7 @@ end
 
 
 function show(io::IO, p::SimplePolynomial)
-    print(io,string(p))
+    print(io, string(p))
 end
 
 
@@ -74,7 +74,7 @@ export string3
 
 
 function pstring(p::SimplePolynomial)
-    nterms = count((x) -> (x!=0), p.data)
+    nterms = count((x) -> (x != 0), p.data)
     if nterms <= 1
         return string(p)
     end
@@ -91,7 +91,7 @@ end
 
 
 function show(io::IO, f::SimpleRationalFunction)
-    print(io,string(f))
+    print(io, string(f))
 end
 
 
@@ -101,15 +101,15 @@ function string3(f::SimpleRationalFunction)
 
     n1 = length(top)
     n2 = length(bot)
-    n = max(n1,n2)
+    n = max(n1, n2)
 
     pad1 = 0
     pad2 = 0
 
     if n1 < n
-        pad1 = div(n-n1,2)
+        pad1 = div(n - n1, 2)
     else
-        pad2 = div(n-n2,2)
+        pad2 = div(n - n2, 2)
     end
 
     line1 = " "^pad1 * top
