@@ -64,8 +64,8 @@ SimplePolynomial(p::SimplePolynomial) = SimplePolynomial(p.data)
 # equality checking
 
 (==)(p::SimplePolynomial, q::SimplePolynomial) = p.data == q.data
-(==)(p::SimplePolynomial, a::T) where {T} = p == SimplePolynomial(a)
-(==)(a::T, p::SimplePolynomial) where {T} = p == SimplePolynomial(a)
+(==)(p::SimplePolynomial, a::T) where {T<:CoefX} = p == SimplePolynomial(a)
+(==)(a::T, p::SimplePolynomial) where {T<:CoefX} = p == SimplePolynomial(a)
 
 
 coeffs(p::SimplePolynomial) = copy(p.data)
