@@ -1,9 +1,6 @@
 # SimplePolynomials
 
 
-[![Build Status](https://travis-ci.com/scheinerman/SimplePolynomials.jl.svg?branch=master)](https://travis-ci.com/scheinerman/SimplePolynomials.jl)
-
-
 This module defines two types:
 
 
