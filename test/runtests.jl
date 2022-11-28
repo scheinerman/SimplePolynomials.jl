@@ -155,9 +155,11 @@ end
     R = newton_roots(p)
     Z = p.(R)
     @test sum(abs(z) for z in Z) < 10^-50
-
-
 end 
 
+@testset "Binomial coefficient" begin
+    p = binomial(x,4)
+    @test p(10) == binomial(10,4)
+end
 
 nothing
