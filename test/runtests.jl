@@ -24,7 +24,7 @@ end
 end
 
 @testset "String" begin
-    p = getx()+1 
+    p = getx() + 1
     @test string(p) == "1 + x"
 end
 
@@ -53,28 +53,28 @@ end
     @test z(-5) == a(-5) + im
     f = (im + x) / (2 * im * x)
     @test 2f(1) == 1 - im
-    z = (x-im)*(x+im)
+    z = (x - im) * (x + im)
     @test z == x^2 + 1
 end
 
 @testset "Mod numbers" begin
-    z = SimplePolynomial(Mod{13}.([1,2,3]))
+    z = SimplePolynomial(Mod{13}.([1, 2, 3]))
     @test z(1) == Mod{13}(6)
     f = inv(z)
     @test f(1) == inv(Mod{13}(6))
 end
 
 @testset "Polynomial GCD" begin
-    p = (x-1)^2 * (x-2)
-    q = (x-1) * (x-3)
-    @test gcd(p,q) == x-1
+    p = (x - 1)^2 * (x - 2)
+    q = (x - 1) * (x - 3)
+    @test gcd(p, q) == x - 1
 
-    p = (x-1)^3 * (x-3)
-    @test gcd(p,p') == (x-1)^2
+    p = (x - 1)^3 * (x - 3)
+    @test gcd(p, p') == (x - 1)^2
 
     c = Mod{13}.(coeffs(p))
     p = SimplePolynomial(c)
-    @test gcd(p,p') == (x-1)^2
+    @test gcd(p, p') == (x - 1)^2
 end
 
 # @testset "Size change" begin
@@ -130,24 +130,24 @@ end
     P = make_function(p)
     @test p(10) == P(10)
 
-    f = p / (1-x)
+    f = p / (1 - x)
     F = make_function(f)
     @test F(10) == f(10)
-    A = [ 2 3 ; 0 -1]
+    A = [2 3; 0 -1]
     p = -2 - x + x^2
-    @test all(p(A).==0)
+    @test all(p(A) .== 0)
 end
 
-@testset "Rational Roots" begin 
+@testset "Rational Roots" begin
     x = getx()
-    p = (x^2+1)*(2x-1)^2*(3x+5)
+    p = (x^2 + 1) * (2x - 1)^2 * (3x + 5)
     R = rational_roots(p)
-    @test R == Multiset([1//2, -5//3, 1//2])
+    @test R == Multiset([1 // 2, -5 // 3, 1 // 2])
 end
 
 @testset "Numerical Roots" begin
     x = getx()
-    p = (x^2+1)*(2x-1)^2*(3x+5)*(x^2+2)
+    p = (x^2 + 1) * (2x - 1)^2 * (3x + 5) * (x^2 + 2)
     R = roots(p)
     Z = p.(R)
     @test sum(abs(z) for z in Z) < 10^-10
@@ -155,11 +155,18 @@ end
     R = newton_roots(p)
     Z = p.(R)
     @test sum(abs(z) for z in Z) < 10^-50
-end 
+end
 
 @testset "Binomial coefficient" begin
-    p = binomial(x,4)
-    @test p(10) == binomial(10,4)
+    p = binomial(x, 4)
+    @test p(10) == binomial(10, 4)
+end
+
+@testset "Interpolation" begin
+    p = x^3 - 3 * x + 4
+    vals = [p(k) for k = 0:5]
+    q = interpolate(vals)
+    @test p == q
 end
 
 nothing

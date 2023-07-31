@@ -237,4 +237,5 @@ include("small.jl")
 include("rational_roots.jl")
 include("newton.jl")
 include("bin_extend.jl")
+include("interpolate.jl")
 end
