@@ -516,6 +516,46 @@ julia> binomial(10,3)
 120
 ```
 
+## Interpolation
+
+Given a list of (exact) numbers, the `interpolate` function returns a polynomial that generates that list.  
+Specifically, if `vals` is the list of numbers, then `interpolate(vals)` returns a polynomial `p`
+such that `p(0)` is the first element of the list, `p(1)` is the second element, and so forth.
+
+Here is a simple example that illustrates that `p(0)` gives the first element of the list:
+```
+julia> vals = [1,4,9,16,25];
+
+julia> interpolate(vals)
+1 + 2*x + x^2
+```
+
+In this next example, we find a polynomial `p` such that `p(n)` is the sum of the first `n` perfect squares.
+```
+julia> f(n) = sum(k^2 for k=0:n)
+f (generic function with 1 method)
+
+julia> vals = [f(n) for n=0:5]
+6-element Vector{Int64}:
+  0
+  1
+  5
+ 14
+ 30
+ 55
+
+julia> p = interpolate(vals)
+1//6*x + 1//2*x^2 + 1//3*x^3
+
+julia> p(10)
+385//1
+
+julia> f(10)
+385
+```
+
+
+
 ## Conversion between `SimplePolynomial` and  `Polynomial`
 
 The `Polynomials` module also defines polynomials with many additional
