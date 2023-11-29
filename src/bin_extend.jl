@@ -24,15 +24,18 @@ julia> binomial(10,3)
 120
 ```
 """
-function binomial(p::T , k::Integer) where T <: Union{SimplePolynomial, SimpleRationalFunction}
-    if k<0 
+function binomial(
+    p::T,
+    k::Integer,
+) where {T<:Union{SimplePolynomial,SimpleRationalFunction}}
+    if k < 0
         return zero(T)
     end
 
-    if k==0
+    if k == 0
         return one(T)
     end
 
-    return prod(p-j for j=0:k-1) // factorial(k)
+    return prod(p - j for j = 0:k-1) // factorial(k)
 
-end 
+end

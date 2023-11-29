@@ -8,7 +8,10 @@ Given a list of numbers `vals`, find a polynomial `p` that generates that list.
 That is, `p(0)` gives the first value on the list, `p(1)` the second value, 
 and so forth. 
 """
-function interpolate(vals::Vector{T}, warnings::Bool=false)::SimplePolynomial where {T<:Number}
+function interpolate(
+    vals::Vector{T},
+    warnings::Bool = false,
+)::SimplePolynomial where {T<:Number}
 
     if length(vals) < 1
         error("List of values must not be empty")
@@ -20,7 +23,8 @@ function interpolate(vals::Vector{T}, warnings::Bool=false)::SimplePolynomial wh
 
     while !(all(z .== 0)) && length(z) >= 1
         if length(z) == 1 && first(z) != 0
-            warnings && @warn "Iterated differences did not reach zero; provide more values?"
+            warnings &&
+                @warn "Iterated differences did not reach zero; provide more values?"
             break
         end
         z = diff(z)
