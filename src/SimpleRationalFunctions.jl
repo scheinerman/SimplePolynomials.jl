@@ -25,6 +25,8 @@ struct SimpleRationalFunction
 end
 
 SimpleRationalFunction(f::SimplePolynomial) = SimpleRationalFunction(f, SimplePolynomial(1))
+SimpleRationalFunction(f::SimpleRationalFunction) = SimpleRationalFunction(f.num, f.den)
+
 SimpleRationalFunction(a::T) where {T<:CoefX} = SimpleRationalFunction(SimplePolynomial(a))
 SimpleRationalFunction(a::T, f::SimplePolynomial) where {T<:CoefX} =
     SimpleRationalFunction(SimplePolynomial(a), f)

@@ -196,7 +196,8 @@ end
 
 zero(::Type{SimplePolynomial}) = SimplePolynomial(zero(Int))
 one(::Type{SimplePolynomial}) = SimplePolynomial(one(Int))
-
+zero(::SimplePolynomial) = SimplePolynomial(0, 1)
+one(::SimplePolynomial) = SimplePolynomial(1, 1)
 
 roots(p::SimplePolynomial) = roots(Polynomial(p))
 
