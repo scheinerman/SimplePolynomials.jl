@@ -4,7 +4,7 @@ import Base: numerator, denominator, (==), zero, one, big
 export SimpleRationalFunction
 
 
-struct SimpleRationalFunction
+struct SimpleRationalFunction <: AbstractAlgebraicFunction
     num::SimplePolynomial
     den::SimplePolynomial
     function SimpleRationalFunction(top::SimplePolynomial, bot::SimplePolynomial)
@@ -66,6 +66,12 @@ one(::SimpleRationalFunction) = SimpleRationalFunction(1, 1)
 
 # big(f::SimpleRationalFunction) = SimpleRationalFunction(big(f.num),big(f.den))
 
+
+function eltype(f::SimpleRationalFunction)
+    T1 = eltype(numerator(f))
+    T2 = eltype(denominator(f))
+    return promote_type(T1,T2)
+end
 
 
 # include("arithmetic.jl")

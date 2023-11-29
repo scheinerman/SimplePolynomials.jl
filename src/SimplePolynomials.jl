@@ -24,7 +24,10 @@ _enlarge(x::Rational) = big(x)
 _enlarge(x::Complex) = big(x)
 _enlarge(x::AbstractMod) = x
 
-struct SimplePolynomial
+abstract type AbstractAlgebraicFunction end
+export AbstractAlgebraicFunction
+
+struct SimplePolynomial <: AbstractAlgebraicFunction
     data::Vector
     func::Function
     function SimplePolynomial(list::Vector{T}) where {T<:CoefX}
@@ -196,8 +199,15 @@ end
 
 zero(::Type{SimplePolynomial}) = SimplePolynomial(zero(Int))
 one(::Type{SimplePolynomial}) = SimplePolynomial(one(Int))
-zero(::SimplePolynomial) = SimplePolynomial(0, 1)
-one(::SimplePolynomial) = SimplePolynomial(1, 1)
+
+zero(::SimplePolynomial) = SimplePolynomial(zero(Int))
+one(::SimplePolynomial) = SimplePolynomial(one(Int))
+
+zero(::Type{AbstractAlgebraicFunction}) = SimplePolynomial(zero(Int))
+one(::Type{AbstractAlgebraicFunction}) = SimplePolynomial(one(Int))
+
+zero(::AbstractAlgebraicFunction) = SimplePolynomial(zero(Int))
+one(::AbstractAlgebraicFunction) = SimplePolynomial(one(Int))
 
 roots(p::SimplePolynomial) = roots(Polynomial(p))
 
