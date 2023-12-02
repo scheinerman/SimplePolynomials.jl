@@ -1,6 +1,6 @@
 name = "SimplePolynomials"
 uuid = "cc47b68c-3164-5771-a705-2bc0097375a0"
-version = "0.2.16"
+version = "0.2.17"
 
 [deps]
 Polynomials = "f27b6e38-b328-58d1-80ce-0feddd5e7a45"
@@ -11,7 +11,7 @@ Multisets = "3b2b4ff1-bcff-5658-a3ee-dbcf1ce5ac09"
 [compat]
 julia = "1"
 Polynomials = "1, 2, 3, 4"
-Mods = "1"
+Mods = "1, 2"
 Primes = "0.4, 0.5"
 Multisets = "0.2, 0.3, 0.4"
 
