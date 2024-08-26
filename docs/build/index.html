@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>SimplePolynomials · SimplePolynomials</title><meta name="title" content="SimplePolynomials · SimplePolynomials"/><meta property="og:title" content="SimplePolynomials · SimplePolynomials"/><meta property="twitter:title" content="SimplePolynomials · SimplePolynomials"/><meta name="description" content="Documentation for SimplePolynomials."/><meta property="og:description" content="Documentation for SimplePolynomials."/><meta property="twitter:description" content="Documentation for SimplePolynomials."/><script data-outdated-warner src="assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.050/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.8/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="assets/documenter.js"></script><script src="search_index.js"></script><script src="siteinfo.js"></script><script src="../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="assets/themes/catppuccin-mocha.css" data-theme-name="catppuccin-mocha"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="assets/themes/catppuccin-macchiato.css" data-theme-name="catppuccin-macchiato"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="assets/themes/catppuccin-frappe.css" data-theme-name="catppuccin-frappe"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="assets/themes/catppuccin-latte.css" data-theme-name="catppuccin-latte"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit"><a href>SimplePolynomials</a></span></div><button class="docs-search-query input is-rounded is-small is-clickable my-2 mx-auto py-1 px-2" id="documenter-search-query">Search docs (Ctrl + /)</button><ul class="docs-menu"><li class="is-active"><a class="tocitem" href>SimplePolynomials</a><ul class="internal"><li><a class="tocitem" href="#Caveat"><span>Caveat</span></a></li><li class="toplevel"><a class="tocitem" href="#Basics"><span>Basics</span></a></li><li><a class="tocitem" href="#Polynomials"><span>Polynomials</span></a></li><li><a class="tocitem" href="#Rational-Functions"><span>Rational Functions</span></a></li><li class="toplevel"><a class="tocitem" href="#Operations"><span>Operations</span></a></li><li><a class="tocitem" href="#Arithmetic"><span>Arithmetic</span></a></li><li><a class="tocitem" href="#Evaluation"><span>Evaluation</span></a></li><li><a class="tocitem" href="#GCD-and-LCM"><span>GCD and LCM</span></a></li><li><a class="tocitem" href="#Roots"><span>Roots</span></a></li><li><a class="tocitem" href="#Calculus"><span>Calculus</span></a></li><li><a class="tocitem" href="#Binomial-Coefficient"><span>Binomial Coefficient</span></a></li><li><a class="tocitem" href="#Interpolation"><span>Interpolation</span></a></li><li><a class="tocitem" href="#Conversion-between-SimplePolynomial-and-Polynomial"><span>Conversion between <code>SimplePolynomial</code> and  <code>Polynomial</code></span></a></li></ul></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><a class="docs-sidebar-button docs-navbar-link fa-solid fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a><nav class="breadcrumb"><ul class="is-hidden-mobile"><li class="is-active"><a href>SimplePolynomials</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>SimplePolynomials</a></li></ul></nav><div class="docs-right"><a class="docs-navbar-link" href="https://github.com/scheinerman/SimplePolynomials.jl" title="View the repository on GitHub"><span class="docs-icon fa-brands"></span><span class="docs-label is-hidden-touch">GitHub</span></a><a class="docs-navbar-link" href="https://github.com/scheinerman/SimplePolynomials.jl/blob/master/docs/src/index.md" title="Edit source on GitHub"><span class="docs-icon fa-solid"></span></a><a class="docs-settings-button docs-navbar-link fa-solid fa-gear" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-article-toggle-button fa-solid fa-chevron-up" id="documenter-article-toggle-button" href="javascript:;" title="Collapse all docstrings"></a></div></header><article class="content" id="documenter-page"><h1 id="SimplePolynomials"><a class="docs-heading-anchor" href="#SimplePolynomials">SimplePolynomials</a><a id="SimplePolynomials-1"></a><a class="docs-heading-anchor-permalink" href="#SimplePolynomials" title="Permalink"></a></h1><p>This module defines two types:</p><ul><li><code>SimplePolynomial</code>: These are polynomials with exact coefficients (integers, rationals, Gaussian integers, Gaussian rationals, or <code>Mod</code>s). The objective is exactness perhaps at the expense of computational efficiency.</li><li><code>SimpleRationalFunction</code>: These are fractions whose numerator and denominator are <code>SimplePolynomial</code>s.</li></ul><h2 id="Caveat"><a class="docs-heading-anchor" href="#Caveat">Caveat</a><a id="Caveat-1"></a><a class="docs-heading-anchor-permalink" href="#Caveat" title="Permalink"></a></h2><p>The polynomials (and rational functions) in this module all have exact and arbitrary size precision. That means there will not be rounding or overflow issues, but the cost is performance. The <code>Polynomials</code> package is more efficient.  Other computer algebra packages may perform better. </p><h1 id="Basics"><a class="docs-heading-anchor" href="#Basics">Basics</a><a id="Basics-1"></a><a class="docs-heading-anchor-permalink" href="#Basics" title="Permalink"></a></h1><h2 id="Polynomials"><a class="docs-heading-anchor" href="#Polynomials">Polynomials</a><a id="Polynomials-1"></a><a class="docs-heading-anchor-permalink" href="#Polynomials" title="Permalink"></a></h2><p>A <code>SimplePolynomial</code> is a polynomial in one variable with exact coefficients. There are a few options to create a <code>SimplePolynomial</code>:</p><pre><code class="nohighlight hljs">julia&gt; using SimplePolynomials
+
+julia&gt; p = SimplePolynomial([2,-4,1])
+2 - 4*x + x^2
+
+julia&gt; p = SimplePolynomial(2,-4,1,0)
+2 - 4*x + x^2</code></pre><p>The <code>getx()</code> function returns <code>SimplePolynomial(0,1)</code>. Assigning that result to a variable named <code>x</code> makes creating polynomials rather natural.</p><pre><code class="nohighlight hljs">julia&gt; x = getx()
+x
+
+julia&gt; p = 2 - 4x + x^2
+2 - 4*x + x^2</code></pre><p>Polynomial coefficients may also be rational numbers, Gaussian integers, Gaussian rationals, or modular numbers.</p><pre><code class="nohighlight hljs">julia&gt; p = 3x^2 - im*x + 4
+4 - im*x + 3*x^2
+
+julia&gt; p = (3//2)x^2 - 4
+-4//1 + 3//2*x^2
+
+julia&gt; using Mods
+
+julia&gt; p = Mod{17}(3) - 2x^2
+Mod{17}(3) + Mod{17}(15)*x^2</code></pre><p>The coefficients of a <code>SimplePolynomial</code> may not be floating point numbers.</p><h3 id="Coefficients"><a class="docs-heading-anchor" href="#Coefficients">Coefficients</a><a id="Coefficients-1"></a><a class="docs-heading-anchor-permalink" href="#Coefficients" title="Permalink"></a></h3><p>The coefficients of a <code>SimplePolynomial</code> can be accessed with the <code>coeffs</code> function:</p><pre><code class="nohighlight hljs">julia&gt; p = 1 -5x + 11x^2 + 4x^3
+1 - 5*x + 11*x^2 + 4*x^3
+
+julia&gt; coeffs(p)
+4-element Array{Int64,1}:
+  1
+ -5
+ 11
+  4</code></pre><p>Use square brackets to retrieve a coefficient associated with a given power:</p><pre><code class="nohighlight hljs">julia&gt; p[2]     # coefficient of x^2
+11
+
+julia&gt; p[0]     # constant term, the zero index is allowed
+1
+
+julia&gt; p[11]    # zero is returned if the index exceeds the degree
+0
+
+julia&gt; p[-1]    # negative indices are not allowed
+ERROR: index [-1] must be nonnegative</code></pre><p>Note that a <code>SimplePolynomial</code> is an immutable object and one may not change its coefficients.</p><pre><code class="nohighlight hljs">julia&gt; p = 3x^2 - 5x +1
+1 - 5*x + 3*x^2
+
+julia&gt; p[1] = 6
+ERROR: MethodError: no method matching setindex!(::SimplePolynomial, ::Int64, ::Int64)</code></pre><p>The <code>degree</code> function returns the degree of the polynomial and <code>lead</code> returns the coefficient of that term.</p><pre><code class="nohighlight hljs">julia&gt; degree(p)
+3
+
+julia&gt; lead(p)
+4</code></pre><p>Nonzero constant polynomials have degree zero. The zero polynomial should have degree <code>-∞</code> but this is not an <code>Int</code>, so we return <code>-1</code>. This is also the only case in which <code>lead</code> returns <code>0</code>:</p><pre><code class="nohighlight hljs">julia&gt; p = SimplePolynomial(0)
+0
+
+julia&gt; degree(p)
+-1
+
+julia&gt; lead(p)
+0</code></pre><p>The function <code>monic(p)</code> returns a <code>SimplePolynomial</code> formed by dividing all coefficients by the leading term:</p><pre><code class="nohighlight hljs">julia&gt; p = 4-8x + 2x^2
+4 - 8*x + 2*x^2
+
+julia&gt; monic(p)
+2 - 4*x + x^2
+
+julia&gt; p = 3x^2-5
+-5 + 3*x^2
+
+julia&gt; monic(p)
+-5//3 + x^2</code></pre><p>The function <code>eltype</code> returns the Julia type of the coefficients.</p><h2 id="Rational-Functions"><a class="docs-heading-anchor" href="#Rational-Functions">Rational Functions</a><a id="Rational-Functions-1"></a><a class="docs-heading-anchor-permalink" href="#Rational-Functions" title="Permalink"></a></h2><p>A <code>SimpleRationalFunction</code> is the ratio of two polynomials:</p><pre><code class="nohighlight hljs">julia&gt; p = 3x + x^3
+3*x + x^3
+
+julia&gt; q = 1-x+x^2
+1 - x + x^2
+
+julia&gt; p/q
+(3*x + x^3) / (1 - x + x^2)</code></pre><p>A <code>SimpleRationalFunction</code> is always represented as the ratio of relatively prime polynomials; that is, any common factors between numerator and denominator are cancelled.</p><pre><code class="nohighlight hljs">julia&gt; p = (x-1)*(x-2)*(x-3)
+-6 + 11*x - 6*x^2 + x^3
+
+julia&gt; q = (x-1)*(x+5)
+-5 + 4*x + x^2
+
+julia&gt; p/q
+(6 - 5*x + x^2) / (5 + x)</code></pre><p>Furthermore, the denominator of a <code>SimpleRationalFunction</code> is always a <em>monic</em> polynomial; that is, the leading coefficient is one.</p><pre><code class="nohighlight hljs">julia&gt; (x-3)/(2x^2-5)
+(-3//2 + 1//2*x) / (-5//2 + x^2)</code></pre><p>Of course, division by zero is forbidden:</p><pre><code class="nohighlight hljs">julia&gt; p = x^2-5;
+
+julia&gt; q = SimplePolynomial(0);
+
+julia&gt; p/q
+ERROR: Denominator cannot be zero</code></pre><h3 id="Numerator-and-denominator"><a class="docs-heading-anchor" href="#Numerator-and-denominator">Numerator and denominator</a><a id="Numerator-and-denominator-1"></a><a class="docs-heading-anchor-permalink" href="#Numerator-and-denominator" title="Permalink"></a></h3><p>Use <code>numerator</code> and <code>denominator</code> to extract the relevant parts of a <code>SimpleRationalFunction</code>:</p><pre><code class="nohighlight hljs">julia&gt; f = (x^2 - 3x + 2) / (x-4)
+(2 - 3*x + x^2) / (-4 + x)
+
+julia&gt; numerator(f)
+2 - 3*x + x^2
+
+julia&gt; denominator(f)
+-4 + x</code></pre><h3 id="Three-line-printing"><a class="docs-heading-anchor" href="#Three-line-printing">Three-line  printing</a><a id="Three-line-printing-1"></a><a class="docs-heading-anchor-permalink" href="#Three-line-printing" title="Permalink"></a></h3><p>The <code>string3</code> function can be used to give a nice visualization of a <code>SimpleRationalFunction</code>:</p><pre><code class="nohighlight hljs">julia&gt; f = (x^2 - 3x + 2) / (x-4)
+(2 - 3*x + x^2) / (-4 + x)
+
+julia&gt; println(string3(f))
+2 - 3*x + x^2
+-------------
+   -4 + x</code></pre><h1 id="Operations"><a class="docs-heading-anchor" href="#Operations">Operations</a><a id="Operations-1"></a><a class="docs-heading-anchor-permalink" href="#Operations" title="Permalink"></a></h1><h2 id="Arithmetic"><a class="docs-heading-anchor" href="#Arithmetic">Arithmetic</a><a id="Arithmetic-1"></a><a class="docs-heading-anchor-permalink" href="#Arithmetic" title="Permalink"></a></h2><p>The usual operations of addition <code>+</code>, subtraction <code>-</code>, multiplication <code>*</code>, and division <code>/</code> may be used with any combination of exact numbers, polynomials, or rational functions.</p><p>Exponentiation by an integer power may be performed for any <code>SimplePolynomial</code> or <code>SimpleRationalFunction</code>.</p><pre><code class="nohighlight hljs">julia&gt; p = 1+x
+1 + x
+
+julia&gt; for k=-3:3
+       println(p^k)
+       end
+1 / (1 + 3*x + 3*x^2 + x^3)
+1 / (1 + 2*x + x^2)
+1 / (1 + x)
+1
+1 + x
+1 + 2*x + x^2
+1 + 3*x + 3*x^2 + x^3</code></pre><p>For polynomials, division results in a <code>SimpleRationalFunction</code>. Alternatively, use <code>diverm</code> to find the quotient and remainder:</p><pre><code class="nohighlight hljs">julia&gt; a = 3x^3 + 5x -1
+-1 + 5*x + 3*x^3
+
+julia&gt; b = x^2+3
+3 + x^2
+
+julia&gt; (q,r) = divrem(a,b)
+(3*x, -1 - 4*x)
+
+julia&gt; q*b + r == a
+true</code></pre><h2 id="Evaluation"><a class="docs-heading-anchor" href="#Evaluation">Evaluation</a><a id="Evaluation-1"></a><a class="docs-heading-anchor-permalink" href="#Evaluation" title="Permalink"></a></h2><p>Polynomials and rational functions behave as functions; they can be evaluated as follows:</p><pre><code class="nohighlight hljs">julia&gt; p = 3x^2 + 5x +1
+1 + 5*x + 3*x^2
+
+julia&gt; p(10)
+351
+
+julia&gt; p(0.5)  # evaluation with a float is permitted
+4.25
+
+julia&gt; f = p/(x+5)
+(1 + 5*x + 3*x^2) / (5 + x)
+
+julia&gt; f(10)
+117//5
+
+julia&gt; f(3.2 - 4.1im)   
+4.575609756097562 - 9.812195121951218im</code></pre><p>The argument of a polynomial or simple rational function may be a square matrix.</p><pre><code class="nohighlight hljs">julia&gt; A = [ 2 3 ; 0 -1];
+
+julia&gt; p = -2 - x + x^2;
+
+julia&gt; p(A)
+2×2 Array{BigInt,2}:
+ 0  0
+ 0  0</code></pre><p>The argument of a polynomial or rational function may itself be a polynomial or a rational function.</p><pre><code class="nohighlight hljs">julia&gt; p = 3x^2 + 5x +1
+1 + 5*x + 3*x^2
+
+julia&gt; q = 2x-3
+-3 + 2*x
+
+julia&gt; p(q)
+13 - 26*x + 12*x^2
+
+julia&gt; 3q^2 + 5q + 1
+13 - 26*x + 12*x^2</code></pre><p>Beware that multiplication requires the <code>*</code> symbol. Observe:</p><pre><code class="nohighlight hljs">julia&gt; (x^2-2)*(x-3)
+6 - 2*x - 3*x^2 + x^3
+
+julia&gt; (x^2-2)(x-3)
+7 - 6*x + x^2</code></pre><p>In the second case, we are evaluating the function <code>(x^2-2)</code> with the argument <code>(x-3)</code>:</p><pre><code class="nohighlight hljs">julia&gt; (x-3)^2 - 2
+7 - 6*x + x^2</code></pre><h3 id="Conversion-to-a-function"><a class="docs-heading-anchor" href="#Conversion-to-a-function">Conversion to a function</a><a id="Conversion-to-a-function-1"></a><a class="docs-heading-anchor-permalink" href="#Conversion-to-a-function" title="Permalink"></a></h3><p>Given <code>p</code>, the syntax <code>p(x)</code> evaluates <code>p</code> at <code>x</code>. Of course, <code>p</code> is of type <code>SimplePolynomial</code> (or <code>SimpleRationalFunction</code>). If you want a <code>Function</code> that evaluates <code>p</code>, use <code>make_function(p)</code>.</p><pre><code class="nohighlight hljs">julia&gt; x = getx();
+
+julia&gt; p = 5 + 2x + 4x^2
+5 + 2*x + 4*x^2
+
+julia&gt; p(10)
+425
+
+julia&gt; P = make_function(p)
+#1 (generic function with 1 method)
+
+julia&gt; P(10)
+425</code></pre><h2 id="GCD-and-LCM"><a class="docs-heading-anchor" href="#GCD-and-LCM">GCD and LCM</a><a id="GCD-and-LCM-1"></a><a class="docs-heading-anchor-permalink" href="#GCD-and-LCM" title="Permalink"></a></h2><p>Given  <code>SimplePolynomial</code>s <code>a</code> and <code>b</code>, <code>gcd(a,b)</code> returns a greatest common divisor of <code>a</code> and <code>b</code>. This is a polynomial of highest degree that divides both <code>a</code> and <code>b</code> without remainder. Note that this is not unique as a nonzero multiple of a GCD is also a GCD of the two polynomials. The polynomial returned is always monic.</p><pre><code class="nohighlight hljs">julia&gt; p = (2x-1) * (x+5)
+-5 + 9*x + 2*x^2
+
+julia&gt; q = (2x-1) * (x^2-4)
+4 - 8*x - x^2 + 2*x^3
+
+julia&gt; gcd(p,q)
+-1//2 + x</code></pre><p>Similarly, <code>lcm(a,b)</code> returns a least common multiple of <code>a</code> and <code>b</code>. As with <code>gcd</code>, this is not uniquely defined; we return a monic least common multiple.</p><pre><code class="nohighlight hljs">julia&gt; lcm(p,q)
+10//1 - 18//1*x - 13//2*x^2 + 9//2*x^3 + x^4</code></pre><h2 id="Roots"><a class="docs-heading-anchor" href="#Roots">Roots</a><a id="Roots-1"></a><a class="docs-heading-anchor-permalink" href="#Roots" title="Permalink"></a></h2><p>For polynomials, <code>roots(p)</code> returns a list of values <code>x</code> for which <code>p(x)==0</code>. These are floating point and so are likely not to be exact.</p><pre><code class="nohighlight hljs">julia&gt; p = x^2-x-1
+-1 - x + x^2
+
+julia&gt; roots(p)
+2-element Array{Float64,1}:
+ -0.6180339887498948
+  1.618033988749895
+
+julia&gt; p.(ans)
+2-element Array{Float64,1}:
+ -1.1102230246251565e-16
+  2.220446049250313e-16</code></pre><p>We can achieve greater accuracy using <code>newton_roots</code>:</p><pre><code class="nohighlight hljs">julia&gt; newton_roots(p)
+2-element Array{BigFloat,1}:
+ -0.6180339887498948482045868343656381177203091798057628621354486227052604628189011
+  1.61803398874989484820458683436563811772030917980576286213544862270526046281891
+
+julia&gt; p.(ans)
+2-element Array{BigFloat,1}:
+ -8.636168555094444625386351862800399571116000364436281385023703470168591803162427e-78
+  1.727233711018888925077270372560079914223200072887256277004740694033718360632485e-77</code></pre><p>The function <code>newton_roots</code> calls <code>newton_solve</code> for each root returned by <code>roots</code>. See the help messages. </p><h3 id="Rational-roots"><a class="docs-heading-anchor" href="#Rational-roots">Rational roots</a><a id="Rational-roots-1"></a><a class="docs-heading-anchor-permalink" href="#Rational-roots" title="Permalink"></a></h3><p>The function <code>rational_roots</code> returns the <code>Multiset</code> of all rational  roots of a polynomial.</p><pre><code class="nohighlight hljs">julia&gt; p = (2x-3)^2 * (4x+3) * x^2 * (x^2+1)
+27*x^2 - 9*x^4 + 16*x^5 - 36*x^6 + 16*x^7
+
+julia&gt; rational_roots(p)
+{-3//4,0//1,0//1,3//2,3//2}
+
+julia&gt; roots(p)
+7-element Array{Complex{Float64},1}:
+   -0.7499999999999999 + 0.0im
+ 3.885780586188048e-16 - 1.0000000000000009im
+ 3.885780586188048e-16 + 1.0000000000000009im
+    1.4999999920796347 + 0.0im
+    1.5000000079203661 + 0.0im
+                   0.0 + 0.0im
+                   0.0 + 0.0im</code></pre><h2 id="Calculus"><a class="docs-heading-anchor" href="#Calculus">Calculus</a><a id="Calculus-1"></a><a class="docs-heading-anchor-permalink" href="#Calculus" title="Permalink"></a></h2><p><code>derivative()</code> returns the derivative of a <code>SimplePolynomial</code> or <code>SimpleRationalFunction</code>. We may also use <code>p&#39;</code> for <code>derivative(p)</code>.</p><pre><code class="nohighlight hljs">julia&gt; p = x^5 - 3x + 2
+2 - 3*x + x^5
+
+julia&gt; derivative(p)
+-3 + 5*x^4
+
+julia&gt; p&#39;
+-3 + 5*x^4
+
+julia&gt; f = (x^2-5)/(x+3)
+(-5 + x^2) / (3 + x)
+
+julia&gt; f&#39;
+(5 + 6*x + x^2) / (9 + 6*x + x^2)</code></pre><p><code>integral(p)</code> returns the integral of <code>p</code> with constant term zero.</p><pre><code class="nohighlight hljs">julia&gt; p = 1 + 3x - 5x^2
+1 + 3*x - 5*x^2
+
+julia&gt; integral(p)
+x + 3//2*x^2 - 5//3*x^3
+
+julia&gt; derivative(ans)
+1 + 3*x - 5*x^2</code></pre><p>The integral of a rational funtion is not necessarily a rational function; it is not implemented in this module.</p><pre><code class="nohighlight hljs">julia&gt; f = 1/(1+x^2)
+1 / (1 + x^2)
+
+julia&gt; integral(f)
+ERROR: MethodError: no method matching integral(::SimpleRationalFunction)</code></pre><h2 id="Binomial-Coefficient"><a class="docs-heading-anchor" href="#Binomial-Coefficient">Binomial Coefficient</a><a id="Binomial-Coefficient-1"></a><a class="docs-heading-anchor-permalink" href="#Binomial-Coefficient" title="Permalink"></a></h2><p>The <code>binomial</code> function is extended to work either <code>SimplePolynomial</code> or <code>SimpleRationalFunction</code> upper arguments (and <code>Integer</code> lower arguments).</p><pre><code class="nohighlight hljs">julia&gt; x = getx()
+x
+
+julia&gt; p = binomial(x,3)
+1//3*x - 1//2*x^2 + 1//6*x^3
+
+julia&gt; p(10)
+120//1
+
+julia&gt; binomial(10,3)
+120</code></pre><h2 id="Interpolation"><a class="docs-heading-anchor" href="#Interpolation">Interpolation</a><a id="Interpolation-1"></a><a class="docs-heading-anchor-permalink" href="#Interpolation" title="Permalink"></a></h2><p>Given a list of (exact) numbers, the <code>interpolate</code> function returns a polynomial that generates that list.   Specifically, if <code>vals</code> is the list of numbers, then <code>interpolate(vals)</code> returns a polynomial <code>p</code> such that <code>p(0)</code> is the first element of the list, <code>p(1)</code> is the second element, and so forth.</p><p>Here is a simple example that illustrates that <code>p(0)</code> gives the first element of the list:</p><pre><code class="nohighlight hljs">julia&gt; vals = [1,4,9,16,25];
+
+julia&gt; interpolate(vals)
+1 + 2*x + x^2</code></pre><p>In this next example, we find a polynomial <code>p</code> such that <code>p(n)</code> is the sum of the first <code>n</code> perfect squares.</p><pre><code class="nohighlight hljs">julia&gt; f(n) = sum(k^2 for k=0:n)
+f (generic function with 1 method)
+
+julia&gt; vals = [f(n) for n=0:5]
+6-element Vector{Int64}:
+  0
+  1
+  5
+ 14
+ 30
+ 55
+
+julia&gt; p = interpolate(vals)
+1//6*x + 1//2*x^2 + 1//3*x^3
+
+julia&gt; p(10)
+385//1
+
+julia&gt; f(10)
+385</code></pre><h2 id="Conversion-between-SimplePolynomial-and-Polynomial"><a class="docs-heading-anchor" href="#Conversion-between-SimplePolynomial-and-Polynomial">Conversion between <code>SimplePolynomial</code> and  <code>Polynomial</code></a><a id="Conversion-between-SimplePolynomial-and-Polynomial-1"></a><a class="docs-heading-anchor-permalink" href="#Conversion-between-SimplePolynomial-and-Polynomial" title="Permalink"></a></h2><p>The <code>Polynomials</code> module also defines polynomials with many additional properties. However, those polynomials allow floating point coefficients.</p><p>Conversion between a <code>SimplePolynomial</code>  and a <code>Polynomial</code>  is simple:</p><ul><li>If <code>p</code> is a <code>SimplePolynomial</code>, then <code>Polynomial(p)</code> is the corresponding <code>Polynomial</code> type.</li><li>If <code>p</code> is a <code>Polynomial</code>, the <code>SimplePolynomial(p)</code> returns its <code>SimplePolynomial</code> version. However, this will not work if the coefficients in <code>p</code> are floating point.</li></ul></article><nav class="docs-footer"><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.5.0 on <span class="colophon-date" title="Monday 26 August 2024 08:52">Monday 26 August 2024</span>. Using Julia version 1.10.4.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
